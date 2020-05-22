@@ -28,20 +28,21 @@ class Game
 
   def turn_order
     current_player = player1
-    turn_prompt(current_player)
-    # board.update
-    # board.show
+    player_column = turn_prompt(current_player)
+    board.update(player_column.to_i - 1, current_player)
+    board.display_board
     #  until winner? || board.full?
     #  end
   end
 
   def turn_prompt(player)
     loop do
-      column = user_input(display_turn_prompt(player), /^[1-7]$/)
-      break if board.valid_move?(column.to_i - 1)
+      @column = user_input(display_turn_prompt(player), /^[1-7]$/)
+      break if board.valid_move?(@column.to_i - 1)
 
       puts display_column_full
     end
+    @column
   end
 
   def user_input(prompt, regex)

@@ -15,8 +15,11 @@ class Board
     board.any? { |row| row[column].empty? }
   end
 
-  # # Need Test
-  # def update; end
+  def update(column, player)
+    row = find_empty_spot(column)
+    board[row][column] = player.number.to_s
+    board
+  end
 
   # # Need Test
   # def full?; end
@@ -29,4 +32,14 @@ class Board
 
   # # Need Test
   # def diagonal_victory?; end
+
+  private
+
+  def find_empty_spot(column)
+    row_index = []
+    board.each_with_index do |row, index|
+      row_index << index if row[column].empty?
+    end
+    row_index[-1]
+  end
 end
