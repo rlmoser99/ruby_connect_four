@@ -18,6 +18,7 @@ class Game
     @player2 = create_player(2)
     board.display_board
     turn_order
+    # puts board.full?
   end
 
   def create_player(number)

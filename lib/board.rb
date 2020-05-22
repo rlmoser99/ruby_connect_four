@@ -22,7 +22,11 @@ class Board
   end
 
   # # Need Test
-  # def full?; end
+  def full?
+    board.all? do |row|
+      row.all? { |spot| spot.match?(/^[12]$/) }
+    end
+  end
 
   # # Need Test
   # def row_victory?; end
