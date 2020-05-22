@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# rubocop:disable Layout/LineLength, Metrics/MethodLength
+
+# Text Content for Connect Four game
 module Display
   RED = "\e[31m\u2B24\e[0m"
   YELLOW = "\e[33m\u2B24\e[0m"
@@ -22,6 +25,22 @@ module Display
     "What is the name of player ##{number}?"
   end
 
+  def display_turn_prompt(player)
+    "\n\n#{player.name}, enter a column number (1-7) to drop a #{chip_color(player.number)} ? "
+  end
+
+  def chip_color(number)
+    number == 1 ? RED_CHIP.to_s : BLUE_CHIP.to_s
+  end
+
+  def display_column_full
+    "\e[31mSorry, that column is full. Please enter a different column.\e[0m"
+  end
+
+  def display_column_warning
+    "\e[31mSorry, please enter a number 1-7 for your turn.\e[0m"
+  end
+
   def display_board
     # system 'clear'
     # board[5][0] = '1'
@@ -41,3 +60,4 @@ module Display
     end
   end
 end
+# rubocop:enable Layout/LineLength, Metrics/MethodLength

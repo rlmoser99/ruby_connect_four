@@ -2,6 +2,7 @@
 
 require_relative 'display.rb'
 
+# Board Logic for Connect Four
 class Board
   include Display
   attr_accessor :board
@@ -10,8 +11,9 @@ class Board
     @board = Array.new(6) { Array.new(7, '') }
   end
 
-  # # Need Test
-  # def valid_move?; end
+  def valid_move?(column)
+    board.any? { |row| row[column].empty? }
+  end
 
   # # Need Test
   # def update; end
