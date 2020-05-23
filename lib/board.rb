@@ -21,15 +21,18 @@ class Board
     board
   end
 
-  # # Need Test
   def full?
     board.all? do |row|
       row.all? { |spot| spot.match?(/^[12]$/) }
     end
   end
 
-  # # Need Test
-  # def row_victory?; end
+  def row_victory?
+    board.each do |row|
+      4.times { |n| return true if connect_four?(row[n..n + 3]) }
+    end
+    false
+  end
 
   # # Need Test
   # def column_victory?; end
@@ -45,5 +48,9 @@ class Board
       row_index << index if row[column].empty?
     end
     row_index[-1]
+  end
+
+  def connect_four?(array)
+    array.uniq.size == 1 && array[0] != ''
   end
 end

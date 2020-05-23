@@ -14,11 +14,12 @@ class Game
 
   def play_game
     puts display_welcome
-    @player1 = create_player(1)
-    @player2 = create_player(2)
-    board.display_board
-    turn_order
+    # @player1 = create_player(1)
+    # @player2 = create_player(2)
+    # board.display_board
+    # turn_order
     # puts board.full?
+    # puts board.row_victory?
   end
 
   def create_player(number)

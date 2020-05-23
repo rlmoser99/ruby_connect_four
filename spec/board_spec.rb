@@ -98,5 +98,29 @@ describe Board do
       expect(example.full?).to be_falsey
     end
   end
+  context '#row_victory?' do
+    it 'returns true when a row has 4 in a row' do
+      example.board = [
+        ['', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', ''],
+        ['1', '1', '1', '1', '', '', ''],
+        ['1', '1', '1', '2', '', '', ''],
+        ['2', '2', '1', '2', '', '', ''],
+        ['1', '2', '2', '1', '', '', '']
+      ]
+      expect(example.row_victory?).to be_truthy
+    end
+    it 'returns false when no rows has 4 in a row' do
+      example.board = [
+        ['', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', ''],
+        ['2', '1', '', '', '', '', ''],
+        ['1', '2', '1', '1', '', '', ''],
+        ['2', '1', '2', '2', '', '', ''],
+        ['1', '2', '2', '1', '', '', '']
+      ]
+      expect(example.row_victory?).to be_falsey
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength, Style/WordArray
