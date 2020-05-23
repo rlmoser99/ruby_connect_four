@@ -20,6 +20,7 @@ class Game
     # turn_order
     # puts board.full?
     # puts board.row_victory?
+    puts board.diagonal_victory?
   end
 
   def create_player(number)

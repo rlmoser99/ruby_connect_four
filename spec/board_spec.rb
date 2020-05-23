@@ -146,5 +146,40 @@ describe Board do
       expect(example.column_victory?).to be_falsey
     end
   end
+  context '#diagonal_victory?' do
+    it 'returns true when there is 4 in a forward diagonal row' do
+      example.board = [
+        ['1', '', '', '', '', '', ''],
+        ['1', '', '', '', '', '', ''],
+        ['1', '1', '1', '1', '', '', ''],
+        ['1', '1', '1', '2', '', '', ''],
+        ['2', '2', '1', '1', '', '', ''],
+        ['1', '2', '2', '1', '', '', '']
+      ]
+      expect(example.diagonal_victory?).to be_truthy
+    end
+    it 'returns true when there is 4 in a backward diagonal row' do
+      example.board = [
+        ['1', '', '', '', '', '', ''],
+        ['2', '', '', '', '', '', ''],
+        ['1', '1', '1', '1', '', '', ''],
+        ['1', '2', '1', '2', '', '', ''],
+        ['2', '1', '1', '1', '', '', ''],
+        ['1', '2', '2', '2', '', '', '']
+      ]
+      expect(example.diagonal_victory?).to be_truthy
+    end
+    it 'returns false when there is not 4 in a diagonal row' do
+      example.board = [
+        ['', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', ''],
+        ['2', '1', '', '', '', '', ''],
+        ['1', '2', '1', '1', '', '', ''],
+        ['2', '1', '2', '2', '', '', ''],
+        ['1', '2', '2', '1', '', '', '']
+      ]
+      expect(example.diagonal_victory?).to be_falsey
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength, Style/WordArray

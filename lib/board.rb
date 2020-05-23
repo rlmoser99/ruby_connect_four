@@ -6,6 +6,16 @@ require_relative 'display.rb'
 class Board
   include Display
   attr_accessor :board
+  FORWARD_COORDINATES = [
+    [0, 0], [0, 1], [0, 2], [0, 3],
+    [1, 0], [1, 1], [1, 2], [1, 3],
+    [2, 0], [2, 1], [2, 2], [2, 3]
+  ].freeze
+  BACKWARD_COORDINATES = [
+    [0, 3], [0, 4], [0, 5], [0, 6],
+    [1, 3], [1, 4], [1, 5], [1, 6],
+    [2, 3], [2, 4], [2, 5], [2, 6]
+  ].freeze
 
   def initialize
     @board = Array.new(6) { Array.new(7, '') }
@@ -41,10 +51,19 @@ class Board
     false
   end
 
-  # # Need Test
-  # def diagonal_victory?; end
+  def diagonal_victory?
+    FORWARD_COORDINATES.each do |coords|
+      forward_array = diagonal_array(coords[0], coords[1], 'forward')
+      return true if connect_four?(forward_array)
+    end
+    BACKWARD_COORDINATES.each do |coords|
+      backward_array = diagonal_array(coords[0], coords[1], 'backward')
+      return true if connect_four?(backward_array)
+    end
+    false
+  end
 
-  private
+  protected
 
   def find_empty_spot(column)
     row_index = []
@@ -56,5 +75,14 @@ class Board
 
   def connect_four?(array)
     array.uniq.size == 1 && array[0] != ''
+  end
+
+  def diagonal_array(row, column, direction, array = [])
+    array << board[row][column]
+    return array if array.length == 4
+
+    column += 1 if direction == 'forward'
+    column -= 1 if direction == 'backward'
+    diagonal_array(row + 1, column, direction, array)
   end
 end
