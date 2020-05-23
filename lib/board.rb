@@ -34,8 +34,12 @@ class Board
     false
   end
 
-  # # Need Test
-  # def column_victory?; end
+  def column_victory?
+    board.transpose.each do |row|
+      3.times { |n| return true if connect_four?(row[n..n + 3]) }
+    end
+    false
+  end
 
   # # Need Test
   # def diagonal_victory?; end
