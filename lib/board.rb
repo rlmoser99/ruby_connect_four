@@ -63,6 +63,10 @@ class Board
     false
   end
 
+  def complete?
+    full? || row_victory? || column_victory? || diagonal_victory?
+  end
+
   protected
 
   def find_empty_spot(column)

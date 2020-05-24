@@ -5,7 +5,8 @@ require_relative 'display.rb'
 require_relative 'game.rb'
 require_relative 'player.rb'
 
-Game.new
+game = Game.new
+game.play_game
 
 # RED = "\e[31m\u2B24\e[0m"
 # YELLOW = "\e[33m\u2B24\e[0m"

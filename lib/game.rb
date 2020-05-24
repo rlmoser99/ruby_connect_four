@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require './display'
+require_relative './display'
 
 # Order of the Connect Four Game
 class Game
@@ -9,7 +9,6 @@ class Game
 
   def initialize
     @board = Board.new
-    play_game
   end
 
   def play_game
@@ -20,7 +19,8 @@ class Game
     # turn_order
     # puts board.full?
     # puts board.row_victory?
-    puts board.diagonal_victory?
+    # puts board.diagonal_victory?
+    # puts board.complete?
   end
 
   def create_player(number)
@@ -34,9 +34,12 @@ class Game
     player_column = turn_prompt(current_player)
     board.update(player_column.to_i - 1, current_player)
     board.display_board
-    #  until winner? || board.full?
+    #  until board.complete?
+    # need to make an 'exit' from the player's turn_prompt
     #  end
   end
+
+  # def switch_current_player; end
 
   def turn_prompt(player)
     loop do
@@ -55,10 +58,6 @@ class Game
       input.match(regex) ? (return input) : print(display_column_warning)
     end
   end
-
-  # def winner?
-  #   board.row_victory? || board.column_victory? || board.diagonal.victory?
-  # end
 
   # def game_over; end
 end

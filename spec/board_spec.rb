@@ -181,5 +181,29 @@ describe Board do
       expect(example.diagonal_victory?).to be_falsey
     end
   end
+  context '#complete?' do
+    it 'returns true when the board is full or four-in-a-row' do
+      example.board = [
+        ['1', '', '', '', '', '', ''],
+        ['1', '', '', '', '', '', ''],
+        ['1', '1', '1', '1', '', '', ''],
+        ['1', '1', '1', '2', '', '', ''],
+        ['2', '2', '1', '1', '', '', ''],
+        ['1', '2', '2', '1', '', '', '']
+      ]
+      expect(example.complete?).to be_truthy
+    end
+    it 'returns false when the board is not full or four-in-a-row' do
+      example.board = [
+        ['1', '', '', '', '', '', ''],
+        ['2', '', '', '', '', '', ''],
+        ['1', '1', '2', '1', '', '', ''],
+        ['1', '2', '2', '2', '', '', ''],
+        ['2', '2', '1', '1', '', '', ''],
+        ['1', '2', '2', '1', '', '', '']
+      ]
+      expect(example.complete?).to be_falsey
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength, Style/WordArray
