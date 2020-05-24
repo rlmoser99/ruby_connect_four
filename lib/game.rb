@@ -13,14 +13,10 @@ class Game
 
   def play_game
     puts display_welcome
-    # @player1 = create_player(1)
-    # @player2 = create_player(2)
-    # board.display_board
-    # turn_order
-    # puts board.full?
-    # puts board.row_victory?
-    # puts board.diagonal_victory?
-    # puts board.complete?
+    @player1 = create_player(1)
+    @player2 = create_player(2)
+    board.display_board
+    turn_order
   end
 
   def create_player(number)
@@ -32,10 +28,11 @@ class Game
   def turn_order
     current_player = player1
     player_column = turn_prompt(current_player)
+    # break if player_column == 'exit'
     board.update(player_column.to_i - 1, current_player)
     board.display_board
     #  until board.complete?
-    # need to make an 'exit' from the player's turn_prompt
+    # need to check for 'exit' from the player's turn_prompt
     #  end
   end
 
@@ -43,7 +40,8 @@ class Game
 
   def turn_prompt(player)
     loop do
-      @column = user_input(display_turn_prompt(player), /^[1-7]$/)
+      @column = user_input(display_turn_prompt(player), /^[1-7]$|^exit$/i)
+      break if @column == 'exit'
       break if board.valid_move?(@column.to_i - 1)
 
       puts display_column_full

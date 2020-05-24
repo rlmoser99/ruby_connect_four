@@ -26,7 +26,7 @@ module Display
   end
 
   def display_turn_prompt(player)
-    "\n\n#{player.name}, enter a column number (1-7) to drop a #{chip_color(player.number)} ? "
+    "\n\n#{player.name}, enter a column number (1-7) to drop a #{chip_color(player.number)} or 'exit' to end the game. "
   end
 
   def chip_color(number)
@@ -38,7 +38,7 @@ module Display
   end
 
   def display_column_warning
-    "\e[31mSorry, please enter a number 1-7 for your turn.\e[0m"
+    "\e[31mSorry, please enter a number 1-7 or 'exit'.\e[0m"
   end
 
   def display_board
