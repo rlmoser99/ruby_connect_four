@@ -42,9 +42,8 @@ module Display
   end
 
   def display_board
-    # system 'clear'
-    # board[5][0] = '1'
-    # board[5][1] = '2'
+    system 'clear'
+    puts ''
     puts "  #{ONE}    #{TWO}    #{THREE}    #{FOUR}    #{FIVE}    #{SIX}    #{SEVEN}"
     puts '|----+----+----+----+----+----+----|'
     board.each do |row|

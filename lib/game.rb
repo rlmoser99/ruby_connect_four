@@ -17,6 +17,7 @@ class Game
     @player2 = create_player(2)
     board.display_board
     turn_order
+    game_over
   end
 
   def create_player(number)
@@ -27,16 +28,16 @@ class Game
 
   def turn_order
     @current_player = player1
-    #  until board.complete?
-    player_column = turn_prompt(@current_player)
-    # break if player_column == 'exit'
-    board.update(player_column.to_i - 1, @current_player)
-    board.display_board
-    puts @current_player.number
-    @current_player = switch_current_player(@current_player)
-    puts @current_player.number
-    # need to check for 'exit' from the player's turn_prompt
-    #  end
+    loop do
+      player_column = turn_prompt(@current_player)
+      break if player_column == 'exit'
+
+      board.update(player_column.to_i - 1, @current_player)
+      board.display_board
+      break if board.complete?
+
+      @current_player = switch_current_player(@current_player)
+    end
   end
 
   def switch_current_player(player)
@@ -63,5 +64,8 @@ class Game
     end
   end
 
-  # def game_over; end
+  def game_over
+    puts 'Game over!'
+    puts "current_player is #{@current_player.name}, and is the winner?"
+  end
 end
