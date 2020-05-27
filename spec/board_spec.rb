@@ -4,21 +4,13 @@
 require_relative '../lib/board'
 require_relative '../lib/display'
 require_relative '../lib/player'
+require_relative './shared_spec'
 
 # rubocop:disable Metrics/BlockLength, Style/WordArray
 describe Board do
-  let(:example) { Board.new }
-  let(:player) { Player.new('test', 1) }
+  include_context 'common'
   context '#initialize' do
     it 'creates an empty grid of 6 rows by 7 columns' do
-      empty_array = [
-        ['', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', '']
-      ]
       expect(example.board).to eql(empty_array)
     end
   end

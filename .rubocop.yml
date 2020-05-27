@@ -1,4 +1,4 @@
 AllCops:
   Exclude:
-    - 'spec/*'
+    - 'spec/spec_helper.rb'
   NewCops: enable

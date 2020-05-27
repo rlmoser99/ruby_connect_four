@@ -5,7 +5,7 @@ require_relative './display'
 # Order of the Connect Four Game
 class Game
   include Display
-  attr_accessor :board, :player1, :player2
+  attr_accessor :board, :player1, :player2, :current_player
 
   def initialize
     @board = Board.new
@@ -26,17 +26,23 @@ class Game
   end
 
   def turn_order
-    current_player = player1
-    player_column = turn_prompt(current_player)
-    # break if player_column == 'exit'
-    board.update(player_column.to_i - 1, current_player)
-    board.display_board
+    @current_player = player1
     #  until board.complete?
+    player_column = turn_prompt(@current_player)
+    # break if player_column == 'exit'
+    board.update(player_column.to_i - 1, @current_player)
+    board.display_board
+    puts @current_player.number
+    @current_player = switch_current_player(@current_player)
+    puts @current_player.number
     # need to check for 'exit' from the player's turn_prompt
     #  end
   end
 
-  # def switch_current_player; end
+  def switch_current_player(player)
+    return player2 if player == player1
+    return player1 if player == player2
+  end
 
   def turn_prompt(player)
     loop do
