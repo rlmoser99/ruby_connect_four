@@ -4,9 +4,16 @@
 
 # Text Content for Connect Four game
 module Display
-  RED = "\e[31m\u2B24\e[0m"
-  YELLOW = "\e[33m\u2B24\e[0m"
-  OPEN = "\u2B24"
+  RED = "\e[31m\u2B24\e[0m "
+  YELLOW = "\e[33m\u2B24\e[0m "
+  COLOR32 = "\e[32m\u2B24\e[0m "
+  COLOR34 = "\e[34m\u2B24\e[0m "
+  COLOR35 = "\e[35m\u2B24\e[0m "
+  COLOR36 = "\e[36m\u2B24\e[0m "
+  COLOR37 = "\e[37m\u2B24\e[0m "
+  COLOR38 = "\e[38m\u2B24\e[0m "
+  COLOR39 = "\e[39m\u2B24\e[0m "
+  OPEN = "\u2B24 "
   ONE = "\e[32m\u2460\e[0m"
   TWO = "\e[32m\u2461\e[0m"
   THREE = "\e[32m\u2462\e[0m"
@@ -57,6 +64,12 @@ module Display
 
         #{RED} Player #1        #{YELLOW} Player #2
       ------------------------------------
+      red is #{RED}
+      yellow is #{YELLOW}
+      32 is #{COLOR32}
+      34 is #{COLOR34}
+      35 is #{COLOR35}
+      36 is #{COLOR36}
     HEREDOC
   end
 
@@ -72,9 +85,9 @@ module Display
     board.each do |row|
       print '|'
       row.each do |cell|
-        print " #{OPEN} " if cell == ''
-        print " #{RED} " if cell == '1'
-        print " #{YELLOW} " if cell == '2'
+        print " #{OPEN}" if cell == ''
+        print " #{RED}" if cell == '1'
+        print " #{YELLOW}" if cell == '2'
         print ' |'
       end
       puts ''
