@@ -12,6 +12,7 @@ class Game
   end
 
   def play_game
+    puts display_title
     puts display_welcome
     @player1 = create_player(1)
     @player2 = create_player(2)
@@ -30,10 +31,10 @@ class Game
     @current_player = player1
     loop do
       player_column = turn_prompt(@current_player)
-      break if player_column == 'exit'
+      break if player_column.downcase == 'exit'
 
       board.update(player_column.to_i - 1, @current_player)
-      board.display_board
+      board.display_game
       break if board.complete?
 
       @current_player = switch_current_player(@current_player)
@@ -48,7 +49,7 @@ class Game
   def turn_prompt(player)
     loop do
       @column = user_input(display_turn_prompt(player), /^[1-7]$|^exit$/i)
-      break if @column == 'exit'
+      break if @column.downcase == 'exit'
       break if board.valid_move?(@column.to_i - 1)
 
       puts display_column_full
@@ -65,7 +66,9 @@ class Game
   end
 
   def game_over
-    puts 'Game over!'
-    puts "current_player is #{@current_player.name}, and is the winner?"
+    unless board.full? || @column.downcase == 'exit'
+      puts display_winner(@current_player)
+    end
+    puts display_draw if board.full?
   end
 end

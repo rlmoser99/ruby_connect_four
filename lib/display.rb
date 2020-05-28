@@ -41,10 +41,33 @@ module Display
     "\e[31mSorry, please enter a number 1-7 or 'exit'.\e[0m"
   end
 
-  def display_board
+  def display_winner(player)
+    "\n\n\e[32mCongratulations, #{player.name} won Connect Four!\e[0m\n\n"
+  end
+
+  def display_draw
+    "\n\nIt's a tie. What to try again?\n\n"
+  end
+
+  def display_title
     system 'clear'
+    <<~HEREDOC
+
+                  \e[32mCONNECT FOUR\e[0m
+
+        #{RED_CHIP} Player #1        #{BLUE_CHIP} Player #2
+      ------------------------------------
+    HEREDOC
+  end
+
+  def display_game
+    puts display_title
     puts ''
     puts "  #{ONE}    #{TWO}    #{THREE}    #{FOUR}    #{FIVE}    #{SIX}    #{SEVEN}"
+    display_board
+  end
+
+  def display_board
     puts '|----+----+----+----+----+----+----|'
     board.each do |row|
       print '|'
