@@ -5,7 +5,7 @@
 # Text Content for Connect Four game
 module Display
   # OPEN = "\u2B24 "
-  OPEN = "\u26AB "
+  OPEN = "\u26AB"
   ONE = "\e[32m\u2460\e[0m"
   TWO = "\e[32m\u2461\e[0m"
   THREE = "\e[32m\u2462\e[0m"
@@ -13,8 +13,8 @@ module Display
   FIVE = "\e[32m\u2464\e[0m"
   SIX = "\e[32m\u2465\e[0m"
   SEVEN = "\e[32m\u2466\e[0m"
-  RED_CHIP = "\u{1F534} "
-  BLUE_CHIP = "\u{1F535} "
+  RED_CHIP = "\u{1F534}"
+  BLUE_CHIP = "\u{1F535}"
 
   def display_welcome
     "\n\nLet's play Connect Four!\n\n"
