@@ -19,6 +19,16 @@ game.play_game
 # SIX = "\e[32m\u2465\e[0m"
 # SEVEN = "\e[32m\u2466\e[0m"
 
+# COLOR31 = "\e[31m\u2B24\e[0m "
+# COLOR32 = "\e[32m\u2B24\e[0m "
+# COLOR33 = "\e[33m\u2B24\e[0m "
+# COLOR34 = "\e[34m\u2B24\e[0m "
+# COLOR35 = "\e[35m\u2B24\e[0m "
+# COLOR36 = "\e[36m\u2B24\e[0m "
+# COLOR37 = "\e[37m\u2B24\e[0m "
+# COLOR38 = "\e[38m\u2B24\e[0m "
+# COLOR39 = "\e[39m\u2B24\e[0m "
+
 # labels = [' 1 ', ' 2 ', ' 3 ', ' 4 ', ' 5 ', ' 6 ', ' 7 ']
 # labels.each { |label| print label }
 # puts ''

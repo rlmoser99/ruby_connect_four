@@ -4,16 +4,8 @@
 
 # Text Content for Connect Four game
 module Display
-  RED = "\e[31m\u2B24\e[0m "
-  YELLOW = "\e[33m\u2B24\e[0m "
-  COLOR32 = "\e[32m\u2B24\e[0m "
-  COLOR34 = "\e[34m\u2B24\e[0m "
-  COLOR35 = "\e[35m\u2B24\e[0m "
-  COLOR36 = "\e[36m\u2B24\e[0m "
-  COLOR37 = "\e[37m\u2B24\e[0m "
-  COLOR38 = "\e[38m\u2B24\e[0m "
-  COLOR39 = "\e[39m\u2B24\e[0m "
-  OPEN = "\u2B24 "
+  # OPEN = "\u2B24 "
+  OPEN = "\u26AB"
   ONE = "\e[32m\u2460\e[0m"
   TWO = "\e[32m\u2461\e[0m"
   THREE = "\e[32m\u2462\e[0m"
@@ -21,8 +13,8 @@ module Display
   FIVE = "\e[32m\u2464\e[0m"
   SIX = "\e[32m\u2465\e[0m"
   SEVEN = "\e[32m\u2466\e[0m"
-  # RED_CHIP = "\u{1F534}"
-  # BLUE_CHIP = "\u{1F535}"
+  RED_CHIP = "\u{1F534}"
+  BLUE_CHIP = "\u{1F535}"
 
   def display_welcome
     "\n\nLet's play Connect Four!\n\n"
@@ -37,7 +29,7 @@ module Display
   end
 
   def chip_color(number)
-    number == 1 ? RED.to_s : YELLOW.to_s
+    number == 1 ? RED_CHIP.to_s : BLUE_CHIP.to_s
   end
 
   def display_column_full
@@ -62,14 +54,9 @@ module Display
 
                   \e[32mCONNECT FOUR\e[0m
 
-        #{RED} Player #1        #{YELLOW} Player #2
+        #{RED_CHIP} Player #1        #{BLUE_CHIP} Player #2
       ------------------------------------
-      red is #{RED}
-      yellow is #{YELLOW}
-      32 is #{COLOR32}
-      34 is #{COLOR34}
-      35 is #{COLOR35}
-      36 is #{COLOR36}
+
     HEREDOC
   end
 
@@ -86,8 +73,8 @@ module Display
       print '|'
       row.each do |cell|
         print " #{OPEN}" if cell == ''
-        print " #{RED}" if cell == '1'
-        print " #{YELLOW}" if cell == '2'
+        print " #{RED_CHIP}" if cell == '1'
+        print " #{BLUE_CHIP}" if cell == '2'
         print ' |'
       end
       puts ''
