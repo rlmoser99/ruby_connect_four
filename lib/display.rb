@@ -14,8 +14,8 @@ module Display
   FIVE = "\e[32m\u2464\e[0m"
   SIX = "\e[32m\u2465\e[0m"
   SEVEN = "\e[32m\u2466\e[0m"
-  RED_CHIP = "\u{1F534}"
-  BLUE_CHIP = "\u{1F535}"
+  # RED_CHIP = "\u{1F534}"
+  # BLUE_CHIP = "\u{1F535}"
 
   def display_welcome
     "\n\nLet's play Connect Four!\n\n"
@@ -30,7 +30,7 @@ module Display
   end
 
   def chip_color(number)
-    number == 1 ? RED_CHIP.to_s : BLUE_CHIP.to_s
+    number == 1 ? RED.to_s : YELLOW.to_s
   end
 
   def display_column_full
@@ -55,7 +55,7 @@ module Display
 
                   \e[32mCONNECT FOUR\e[0m
 
-        #{RED_CHIP} Player #1        #{BLUE_CHIP} Player #2
+        #{RED} Player #1        #{YELLOW} Player #2
       ------------------------------------
     HEREDOC
   end
@@ -73,8 +73,8 @@ module Display
       print '|'
       row.each do |cell|
         print " #{OPEN} " if cell == ''
-        print " #{RED_CHIP}" if cell == '1'
-        print " #{BLUE_CHIP}" if cell == '2'
+        print " #{RED} " if cell == '1'
+        print " #{YELLOW} " if cell == '2'
         print ' |'
       end
       puts ''
