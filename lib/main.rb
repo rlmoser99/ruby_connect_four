@@ -5,8 +5,8 @@ require_relative 'display.rb'
 require_relative 'game.rb'
 require_relative 'player.rb'
 
-# game = Game.new
-# game.play_game
+game = Game.new
+game.play_game
 
 # RED = "\e[31m\u2B24\e[0m"
 # YELLOW = "\e[33m\u2B24\e[0m"
@@ -19,23 +19,23 @@ require_relative 'player.rb'
 # SIX = "\e[32m\u2465\e[0m"
 # SEVEN = "\e[32m\u2466\e[0m"
 
-COLOR31 = "\e[31m\u2B24\e[0m "
-COLOR32 = "\e[32m\u2B24\e[0m "
-COLOR33 = "\e[33m\u2B24\e[0m "
-COLOR34 = "\e[34m\u2B24\e[0m "
-COLOR35 = "\e[35m\u2B24\e[0m "
-COLOR36 = "\e[36m\u2B24\e[0m "
-COLOR37 = "\e[37m\u2B24\e[0m "
-COLOR38 = "\e[38m\u2B24\e[0m "
-COLOR39 = "\e[39m\u2B24\e[0m "
-puts "31 #{COLOR31}"
-puts "32 #{COLOR32}"
-puts "33 #{COLOR33}"
-puts "34 #{COLOR34}"
-puts "35 #{COLOR35}"
-puts "36 #{COLOR36}"
-puts "37 #{COLOR37}"
-puts "38 #{COLOR38}"
+# COLOR31 = "\e[31m\u2B24\e[0m "
+# COLOR32 = "\e[32m\u2B24\e[0m "
+# COLOR33 = "\e[33m\u2B24\e[0m "
+# COLOR34 = "\e[34m\u2B24\e[0m "
+# COLOR35 = "\e[35m\u2B24\e[0m "
+# COLOR36 = "\e[36m\u2B24\e[0m "
+# COLOR37 = "\e[37m\u2B24\e[0m "
+# COLOR38 = "\e[38m\u2B24\e[0m "
+# COLOR39 = "\e[39m\u2B24\e[0m "
+# puts "31 #{COLOR31}"
+# puts "32 #{COLOR32}"
+# puts "33 #{COLOR33}"
+# puts "34 #{COLOR34}"
+# puts "35 #{COLOR35}"
+# puts "36 #{COLOR36}"
+# puts "37 #{COLOR37}"
+# puts "38 #{COLOR38}"
 
 # labels = [' 1 ', ' 2 ', ' 3 ', ' 4 ', ' 5 ', ' 6 ', ' 7 ']
 # labels.each { |label| print label }
