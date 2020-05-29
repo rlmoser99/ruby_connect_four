@@ -11,12 +11,16 @@ class Game
     @board = Board.new
   end
 
-  def play_game
+  def start_game
     puts display_title
     puts display_welcome
     @player1 = create_player(1)
     @player2 = create_player(2)
-    board.display_board
+    play_game
+  end
+
+  def play_game
+    board.display_game
     turn_order
     game_over
   end
@@ -69,5 +73,15 @@ class Game
       puts display_winner(@current_player)
     end
     puts display_draw if board.full?
+    repeat_game unless @column.downcase == 'exit'
+  end
+
+  def repeat_game
+    puts display_play_again(player1, player2)
+    repeat = gets.chomp
+    return unless repeat == 'y'
+
+    @board = Board.new
+    play_game
   end
 end

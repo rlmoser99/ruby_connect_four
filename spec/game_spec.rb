@@ -8,7 +8,7 @@ require_relative '../lib/player'
 
 # rubocop:disable Layout/LineLength
 describe Game do
-  context 'has 4 variables' do
+  context 'has board, 2 players, and current_player' do
     it { is_expected.to respond_to(:board, :player1, :player2, :current_player) }
   end
   context '#switch_current_player' do

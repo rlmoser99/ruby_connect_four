@@ -41,11 +41,19 @@ module Display
   end
 
   def display_winner(player)
-    "\n\n\e[32mCongratulations, #{player.name} won Connect Four!\e[0m\n\n"
+    "\n\n\e[32mCongratulations, #{player.name}! You won this game!\e[0m\n\n"
   end
 
   def display_draw
-    "\n\nIt's a tie. What to try again?\n\n"
+    "\n\nThat was a tough game, andIt's a tie.\n\n"
+  end
+
+  def display_play_again(player1, player2)
+    <<~HEREDOC
+      #{player1.name} and #{player2.name}, do you want to play again?
+
+      Press '\e[32my\e[0m' for yes, or any other key to exit."
+    HEREDOC
   end
 
   def display_title
