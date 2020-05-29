@@ -37,13 +37,12 @@ class Game
       board.display_game
       break if board.complete?
 
-      @current_player = switch_current_player(@current_player)
+      switch_current_player
     end
   end
 
-  def switch_current_player(player)
-    return player2 if player == player1
-    return player1 if player == player2
+  def switch_current_player
+    @current_player = @current_player == player1 ? player2 : player1
   end
 
   def turn_prompt(player)
