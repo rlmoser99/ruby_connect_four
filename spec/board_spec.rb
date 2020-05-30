@@ -7,9 +7,7 @@ require_relative '../lib/player'
 
 # rubocop:disable Metrics/BlockLength, Style/WordArray
 describe Board do
-  # let(:player) { Player.new('test', 1) }
   let(:player1) { Player.new('test', 1) }
-  subject { described_class.new }
   context '#initialize' do
     it 'creates an empty grid of 6 rows by 7 columns' do
       empty_array = [
