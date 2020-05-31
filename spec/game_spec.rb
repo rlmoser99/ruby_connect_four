@@ -1,16 +1,13 @@
 # frozen_string_literal: true
 
-# spec/game_spec.rb
 require_relative '../lib/game'
 require_relative '../lib/player'
+require_relative '../lib/board'
 
-# rubocop:disable Layout/LineLength
+# rubocop:disable Metrics/BlockLength, Layout/LineLength
 describe Game do
   context 'has board, player1, player2, and current_player' do
-    it { is_expected.to respond_to(:board) }
-    it { is_expected.to respond_to(:player1) }
-    it { is_expected.to respond_to(:player2) }
-    it { is_expected.to respond_to(:current_player) }
+    it { is_expected.to respond_to(:board, :player1, :player2, :current_player) }
   end
   before do
     subject.player1 = instance_double(Player)
@@ -30,5 +27,31 @@ describe Game do
       end
     end
   end
+  context '#player_input' do
+    context 'when input is 1-7' do
+      it 'returns input' do
+        expect(subject.player_input('3')).to eq('3')
+      end
+    end
+    context 'when input is exit' do
+      it 'returns input' do
+        expect(subject.player_input('exit')).to eq('exit')
+      end
+    end
+  end
+  context '#verify_input' do
+    context 'when input is a board.valid_move?' do
+      it 'returns input' do
+        board = double(Board, valid_move?: true)
+        expect(board.valid_move?).to be true
+        expect(subject.verify_input(subject.player1, '3')).to eq('3')
+      end
+    end
+    context 'when input is exit' do
+      it 'returns exit' do
+        expect(subject.verify_input(subject.player1, 'exit')).to eq('exit')
+      end
+    end
+  end
 end
-# rubocop:enable Layout/LineLength
+# rubocop:enable Metrics/BlockLength, Layout/LineLength
