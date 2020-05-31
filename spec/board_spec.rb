@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-# spec/board_spec.rb
 require_relative '../lib/board'
-require_relative '../lib/display'
 require_relative '../lib/player'
 
 # rubocop:disable Metrics/BlockLength, Style/WordArray
@@ -166,7 +164,7 @@ describe Board do
     end
   end
   context '#diagonal_victory?' do
-    context 'there is a diagonal four-in-a-row' do
+    context 'has a diagonal four-in-a-row' do
       it 'should be true' do
         subject.board = [
           ['1', '', '', '', '', '', ''],
@@ -190,7 +188,7 @@ describe Board do
         expect(subject.diagonal_victory?).to be true
       end
     end
-    context 'there is not a diagonal four-in-a-row' do
+    context 'does not have a diagonal four-in-a-row' do
       it 'should be false' do
         subject.board = [
           ['', '', '', '', '', '', ''],
