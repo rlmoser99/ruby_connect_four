@@ -34,10 +34,10 @@ class Game
   def turn_order
     @current_player = player1
     loop do
-      player_column = turn_prompt(@current_player)
-      break if player_column.downcase == 'exit'
+      @column = verified_input(@current_player)
+      break if @column.downcase == 'exit'
 
-      board.update(player_column.to_i - 1, @current_player)
+      board.update(@column.to_i - 1, @current_player)
       board.display_game
       break if board.complete?
 
@@ -45,27 +45,33 @@ class Game
     end
   end
 
-  def switch_current_player
-    @current_player = @current_player == player1 ? player2 : player1
+  def verified_input(player)
+    input = player_input(turn_prompt(@current_player))
+    return 'exit' if input.downcase == 'exit'
+    return input if board.valid_move?(input.to_i - 1)
+
+    puts display_column_full
+    verified_input(player)
+  end
+
+  def player_input(input)
+    return input if valid_input?(input)
+
+    puts display_column_warning
+    player_input(turn_prompt(@current_player))
   end
 
   def turn_prompt(player)
-    loop do
-      @column = user_input(display_turn_prompt(player), /^[1-7]$|^exit$/i)
-      break if @column.downcase == 'exit'
-      break if board.valid_move?(@column.to_i - 1)
-
-      puts display_column_full
-    end
-    @column
+    puts display_turn_prompt(player)
+    gets.chomp
   end
 
-  def user_input(prompt, regex)
-    loop do
-      print prompt
-      input = gets.chomp
-      input.match(regex) ? (return input) : print(display_column_warning)
-    end
+  def valid_input?(input)
+    input.match(/^[1-7]$|^exit$/i)
+  end
+
+  def switch_current_player
+    @current_player = @current_player == player1 ? player2 : player1
   end
 
   def game_over

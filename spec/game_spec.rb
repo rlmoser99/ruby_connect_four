@@ -12,11 +12,11 @@ describe Game do
     it { is_expected.to respond_to(:player2) }
     it { is_expected.to respond_to(:current_player) }
   end
+  before do
+    subject.player1 = instance_double(Player)
+    subject.player2 = instance_double(Player)
+  end
   describe '#switch_current_player' do
-    before do
-      subject.player1 = instance_double(Player)
-      subject.player2 = instance_double(Player)
-    end
     context 'when #1 was current_player' do
       it 'changes to player #2' do
         subject.current_player = subject.player1
