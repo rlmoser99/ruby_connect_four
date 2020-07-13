@@ -70,7 +70,7 @@ class Game
   end
 
   def valid_input?(input)
-    input.match(/^[1-7]$|^exit$/i)
+    input.match?(/^[1-7]$|^exit$/i)
   end
 
   def switch_current_player

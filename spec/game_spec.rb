@@ -3,20 +3,13 @@
 require_relative '../lib/game'
 require_relative '../lib/player'
 require_relative '../lib/board'
-
-# rubocop:disable Metrics/BlockLength, Layout/LineLength
 describe Game do
   subject(:game) { described_class.new }
   before do
-    # game.board = instance_double(Board, { display_game: nil })
-    game.board = instance_double(Board, display_game: nil, update: nil, complete?: true)
+    game.board = instance_double(Board, display_game: nil, complete?: true)
     game.player1 = instance_double(Player)
     game.player2 = instance_double(Player)
   end
-
-  # context 'has board, player1, player2, and current_player' do
-  #   it { is_expected.to respond_to(:board, :player1, :player2, :current_player) }
-  # end
 
   describe '#initialize' do
     it 'has a board' do
@@ -58,12 +51,6 @@ describe Game do
   end
 
   describe '#turn_order' do
-    before do
-      game.board = instance_double(Board, display_game: nil, update: nil, complete?: true)
-      game.player1 = instance_double(Player)
-      game.player2 = instance_double(Player)
-    end
-
     context 'when player column input is exit' do
       before do
         game.instance_variable_set(:@current_player, game.player1)
@@ -78,110 +65,150 @@ describe Game do
     end
 
     context 'when board is complete' do
+      player_input = '2'
+      player_input_column = 1
+
       before do
+        game.board = instance_double(Board, display_game: nil, complete?: true)
         game.instance_variable_set(:@current_player, game.player1)
-        game.instance_variable_set(:@column, '1')
+        game.instance_variable_set(:@column, player_input)
       end
 
-      # it 'exits loop before switching curent player' do
-      #   expect(game).to receive(:player_turn_input).with(game.current_player).and_return('1')
-      #   expect(game.board).to receive(:update).with(1, game.current_player)
-      #   # allow(game.board).to receive(:update).with(1, game.current_player).and_return(nil)
-      #   expect(game.board).to receive(:display_game)
-      #   expect(game).not_to receive(:switch_current_player)
-      #   game.turn_order
-      # end
+      it 'exits loop before switching curent player' do
+        expect(game).to receive(:player_turn_input).with(game.current_player).and_return(player_input)
+        expect(game.board).to receive(:update).with(player_input_column, game.current_player)
+        expect(game.board).to receive(:display_game)
+        expect(game).not_to receive(:switch_current_player)
+        game.turn_order
+      end
     end
   end
 
-  # describe '#turn_order' do
-  #   before do
-  #     game.board = instance_double(Board, display_game: nil, update: nil, complete?: true)
-  #     game.player1 = instance_double(Player)
-  #     game.player2 = instance_double(Player)
-  #     # game.current_player = game.player1
-  #     game.instance_variable_set(:@current_player, game.player1)
-  #     game.instance_variable_set(:@column, '1')
-  #   end
+  describe '#player_turn_input' do
+    it 'returns a column number' do
+      player_input = '4'
+      expect(game).to receive(:player_turn_input).with(game.current_player).and_return(player_input)
+      column = game.player_turn_input(game.current_player)
+      expect(column).to eq(player_input)
+    end
+  end
 
-  #   it 'loops until board is complete' do
-  #     # game.instance_variable_set(@current_player, game.player1)
-  #     # game.instance_variable_set(@column, '1')
-  #     # expect(game.current_player).to be(player1)
-  #     # allow(column).to receive(:player_turn_input).with(game.current_player).and_return('1')
-  #     # expect(game).to receive(:player_turn_input).with(game.current_player).and_return('1')
-  #     # expect(game.board).to receive(:update).with(1, game.current_player)
-  #     # allow(game.board).to receive(:update).with(1, game.current_player).and_return(nil)
-  #     expect(game.board).to receive(:update).with(1, game.current_player).and_return(nil)
-  #     expect(game.board).to receive(:display_game)
-  #     expect(game).not_to receive(:switch_current_player)
-  #     game.turn_order
-  #   end
-  # end
+  describe '#verify_input' do
+    context 'when input is exit' do
+      it 'returns exit' do
+        exit_input = 'exit'
+        verified_input = game.verify_input(game.player1, exit_input)
+        expect(verified_input).to eq('exit')
+      end
+    end
 
-  describe '#player_turn_input' do; end
-  describe '#turn_prompt' do; end
-  describe '#valid_input?' do; end
-  describe '#game_over' do; end
+    context 'when input is a valid_move?' do
+      before do
+        game.board = instance_double(Board, valid_move?: true)
+      end
+
+      it 'returns input' do
+        number_input = '3'
+        verified_input = game.verify_input(game.player1, number_input)
+        expect(verified_input).to eq('3')
+      end
+    end
+  end
+
+  describe '#player_input' do
+    context 'when input is 1-7' do
+      it 'returns valid number input' do
+        number_input = '3'
+        valid_input = game.player_input(number_input)
+        expect(valid_input).to eq('3')
+      end
+    end
+
+    context 'when input is exit' do
+      it 'returns valid exit input' do
+        exit_input = 'exit'
+        valid_input = game.player_input(exit_input)
+        expect(valid_input).to eq('exit')
+      end
+    end
+  end
+
+  describe '#turn_prompt' do
+    before do
+      game.player1 = instance_double(Player, name: 'One', number: 1)
+      game.instance_variable_set(:@current_player, game.player1)
+    end
+
+    it 'returns player input' do
+      prompt = "\n\n#{game.player1.name}, enter a column number (1-7) to drop a \u{1F534}  or 'exit' to end the game. "
+      user_input = '2'
+      expect(game).to receive(:puts).once.with(prompt)
+      expect(game).to receive(:gets).and_return(user_input)
+      result = game.turn_prompt(game.current_player)
+      expect(result).to eq(user_input)
+    end
+  end
+
+  describe '#valid_input?' do
+    context 'when user input is 1-digit from 1-7' do
+      it 'validates user input' do
+        user_input = '2'
+        result = game.valid_input?(user_input)
+        expect(result).to be true
+      end
+    end
+
+    context 'when user input is exit' do
+      it 'validates user input' do
+        user_input = 'exit'
+        result = game.valid_input?(user_input)
+        expect(result).to be true
+      end
+    end
+
+    context 'when user input is not 1-digit from 1-7 or exit' do
+      it 'invalidates user input' do
+        user_input = 's'
+        result = game.valid_input?(user_input)
+        expect(result).to be false
+      end
+    end
+  end
+
+  describe '#switch_current_player' do
+    context 'when #1 was current_player' do
+      it 'changes current_player to #2' do
+        game.current_player = game.player1
+        expect { game.switch_current_player }.to change { game.current_player }.to be(game.player2)
+      end
+    end
+
+    context 'when #2 was current_player' do
+      it 'changes current_player to #1' do
+        game.current_player = game.player2
+        expect { game.switch_current_player }.to change { game.current_player }.to be(game.player1)
+      end
+    end
+  end
+
+  describe '#game_over' do
+    context 'when board is full' do
+      before do
+        game.board = instance_double(Board, full?: true)
+        # game.instance_variable_set(:@column, '3')
+      end
+    end
+
+    context 'when column input is exit' do
+    end
+
+    context 'when board is not full' do
+    end
+  end
+
   describe '#repeat_game' do; end
-
-  # describe '#switch_current_player' do
-  #   context 'when #1 was current_player' do
-  #     it 'changes current_player to #2' do
-  #       game.current_player = game.player1
-  #       expect { game.switch_current_player }.to change { game.current_player }.to be(game.player2)
-  #     end
-  #   end
-
-  #   context 'when #2 was current_player' do
-  #     it 'changes current_player to #1' do
-  #       game.current_player = game.player2
-  #       expect { game.switch_current_player }.to change { game.current_player }.to be(game.player1)
-  #     end
-  #   end
-  # end
-
-  # describe '#player_input' do
-  #   context 'when input is 1-7' do
-  #     it 'returns valid number input' do
-  #       number_input = '3'
-  #       valid_input = game.player_input(number_input)
-  #       expect(valid_input).to eq('3')
-  #     end
-  #   end
-
-  #   context 'when input is exit' do
-  #     it 'returns valid exit input' do
-  #       exit_input = 'exit'
-  #       valid_input = game.player_input(exit_input)
-  #       expect(valid_input).to eq('exit')
-  #     end
-  #   end
-  # end
-
-  # describe '#verify_input' do
-  #   context 'when input is a valid_move?' do
-  #     before do
-  #       game.board = instance_double(Board, valid_move?: true)
-  #     end
-
-  #     it 'returns input' do
-  #       number_input = '3'
-  #       verified_input = game.verify_input(game.player1, number_input)
-  #       expect(verified_input).to eq('3')
-  #     end
-  #   end
-
-  #   context 'when input is exit' do
-  #     it 'returns exit' do
-  #       exit_input = 'exit'
-  #       verified_input = game.verify_input(game.player1, exit_input)
-  #       expect(verified_input).to eq('exit')
-  #     end
-  #   end
-  # end
 end
-# rubocop:enable Metrics/BlockLength, Layout/LineLength
+# rubocop:enable
 
 # This method is a PROTECTED method and it does NOT need to be tested.
 # This method is only used as parameter for the #verify_input method.
