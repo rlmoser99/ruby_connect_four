@@ -3,18 +3,12 @@
 require_relative '../lib/game'
 require_relative '../lib/player'
 require_relative '../lib/board'
+
 describe Game do
   subject(:game) { described_class.new }
   before do
-    game.board = instance_double(Board, display_game: nil, complete?: true)
     game.player1 = instance_double(Player)
-    game.player2 = instance_double(Player)
-  end
-
-  describe '#initialize' do
-    it 'has a board' do
-      expect(game).to respond_to(:board)
-    end
+    game.board = instance_double(Board, display_game: nil, complete?: true)
   end
 
   describe '#start_game' do
@@ -176,6 +170,10 @@ describe Game do
   end
 
   describe '#switch_current_player' do
+    before do
+      game.player2 = instance_double(Player)
+    end
+
     context 'when #1 was current_player' do
       it 'changes current_player to #2' do
         game.current_player = game.player1
@@ -195,51 +193,49 @@ describe Game do
     context 'when board is full' do
       before do
         game.board = instance_double(Board, full?: true)
-        # game.instance_variable_set(:@column, '3')
+        game.instance_variable_set(:@column, '3')
+      end
+
+      it 'displays draw message' do
+        expect(game).to receive(:puts)
+        expect(game).to receive(:display_draw)
+        expect(game).to receive(:repeat_game)
+        game.game_over
       end
     end
 
     context 'when column input is exit' do
+      before do
+        game.board = instance_double(Board, full?: false)
+        game.instance_variable_set(:@column, 'exit')
+      end
+
+      it 'exits the game' do
+        expect(game).not_to receive(:puts)
+        expect(game).not_to receive(:display_draw)
+        expect(game).not_to receive(:display_winner)
+        expect(game).not_to receive(:repeat_game)
+        game.game_over
+      end
     end
 
     context 'when board is not full' do
+      before do
+        game.board = instance_double(Board, full?: false)
+        game.instance_variable_set(:@column, '3')
+        game.instance_variable_set(:@current_player, game.player1)
+      end
+
+      it 'display winner' do
+        expect(game).to receive(:puts)
+        expect(game).to receive(:display_winner).with(game.player1)
+        expect(game).not_to receive(:display_draw)
+        expect(game).to receive(:repeat_game)
+        game.game_over
+      end
     end
   end
 
   describe '#repeat_game' do; end
 end
 # rubocop:enable
-
-# This method is a PROTECTED method and it does NOT need to be tested.
-# This method is only used as parameter for the #verify_input method.
-# It is unneccessary to test methods that only contain puts and/or gets because they are well-tested in the standard ruby library.
-# However, if this test was public (instead of protected) and you had to test it, you'll need to create a stub for the gets method
-# https://relishapp.com/rspec/rspec-mocks/v/2-14/docs/method-stubs/stub-with-substitute-implementation
-
-# describe '#player_input' do
-#   it 'outputs a phrase' do
-#     prompt = "Choose 1-digit between 0-9\n"
-#     expect { game.player_input }.to output(prompt).to_stdout
-#   end
-
-#   it 'is equal to the return value of the gets method stub' do
-#     allow(game).to receive(:gets).and_return('3')
-#     input = game.player_input
-#     expect(input).to eq('3')
-#   end
-# end
-
-# This test is not neccessary, because this recursive method will repeat until a valid argument is given, due to a regex check.
-# This test uses a stub to 'fake' that when it receives verify_method that it returns 7 no matter what.
-# Therefore, this test really only proves that the stub works, not that the method works!
-
-# describe '#verify_input' do
-#   context 'when using a stub to fake an in-valid input as argument' do
-#     it 'returns valid input' do
-#       user_input = 'g'
-#       allow(game).to receive(:verify_input).and_return('5')
-#       verified_input = game.verify_input(user_input)
-#       expect(game).to have_received(:verify_input).with('g')
-#       expect(verified_input).to eq('5')
-#     end
-#   end
