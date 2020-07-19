@@ -8,9 +8,11 @@ require_relative '../lib/board'
 
 describe Game do
   subject(:game) { described_class.new }
+
   before do
     game.player1 = instance_double(Player)
-    game.board = instance_double(Board, display_game: nil, complete?: true)
+    game.player2 = instance_double(Player)
+    game.board = instance_double(Board)
   end
 
   describe '#start_game' do
@@ -172,10 +174,6 @@ describe Game do
   end
 
   describe '#switch_current_player' do
-    before do
-      game.player2 = instance_double(Player)
-    end
-
     context 'when #1 was current_player' do
       it 'changes current_player to #2' do
         game.current_player = game.player1
@@ -239,10 +237,6 @@ describe Game do
   end
 
   describe '#repeat_game' do
-    before do
-      game.player2 = instance_double(Player)
-    end
-
     context 'when player wants to repeat' do
       before do
         allow(game).to receive(:gets).and_return('y')
