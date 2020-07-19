@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/BlockLength, Layout/LineLength
+
 require_relative '../lib/game'
 require_relative '../lib/player'
 require_relative '../lib/board'
@@ -236,6 +238,40 @@ describe Game do
     end
   end
 
-  describe '#repeat_game' do; end
+  describe '#repeat_game' do
+    before do
+      game.player2 = instance_double(Player)
+    end
+
+    context 'when player wants to repeat' do
+      before do
+        allow(game).to receive(:gets).and_return('y')
+      end
+
+      it 'replays game' do
+        expect(game).to receive(:puts)
+        expect(game).to receive(:display_play_again).with(game.player1, game.player2)
+        expect(game).to receive(:gets).and_return('y')
+        expect(Board).to receive(:new)
+        expect(game).to receive(:play_game)
+        game.repeat_game
+      end
+    end
+
+    context 'when player does not want to repeat' do
+      before do
+        allow(game).to receive(:gets).and_return('n')
+      end
+
+      it 'does not replay game' do
+        expect(game).to receive(:puts)
+        expect(game).to receive(:display_play_again).with(game.player1, game.player2)
+        expect(game).to receive(:gets).and_return('n')
+        expect(Board).not_to receive(:new)
+        expect(game).not_to receive(:play_game)
+        game.repeat_game
+      end
+    end
+  end
 end
-# rubocop:enable
+# rubocop:enable Metrics/BlockLength, Layout/LineLength
