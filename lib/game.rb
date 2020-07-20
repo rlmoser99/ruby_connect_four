@@ -8,7 +8,7 @@ class Game
   attr_accessor :board, :player1, :player2, :current_player
 
   def initialize
-    @board = Board.new
+    @board = GameBoard.new
   end
 
   def start_game

@@ -3,9 +3,9 @@
 require_relative 'display.rb'
 
 # Board Logic for Connect Four
-class Board
+class GameBoard
   include Display
-  attr_accessor :board
+  attr_reader :board
   FORWARD_COORDINATES = [
     [0, 0], [0, 1], [0, 2], [0, 3],
     [1, 0], [1, 1], [1, 2], [1, 3],

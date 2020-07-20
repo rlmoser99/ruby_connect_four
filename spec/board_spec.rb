@@ -4,8 +4,9 @@ require_relative '../lib/board'
 require_relative '../lib/player'
 
 # rubocop:disable Metrics/BlockLength, Style/WordArray
-describe Board do
-  subject(:game) { described_class.new }
+
+describe GameBoard do
+  subject(:game_board) { described_class.new }
   let(:player1) { Player.new('test', 1) }
 
   describe '#initialize' do
@@ -18,27 +19,28 @@ describe Board do
         ['', '', '', '', '', '', ''],
         ['', '', '', '', '', '', '']
       ]
-      board = game.board
+      board = game_board.board
       expect(board).to eql(empty_array)
     end
   end
 
   describe '#valid_move?' do
     before do
-      game.board = [
+      valid_example = [
         ['2', '2', '', '', '', '', ''],
         ['1', '1', '', '', '', '', ''],
         ['2', '1', '', '', '', '', ''],
         ['1', '2', '', '', '', '', ''],
         ['2', '2', '', '', '', '', ''],
-        ['1', '2', '1', '2', '2', '1', '2']
+        ['2', '2', '1', '2', '2', '1', '2']
       ]
+      game_board.instance_variable_set(:@board, valid_example)
     end
 
     context 'column has open slots' do
       it 'is a valid move' do
         open_column = 2
-        open_column_move = game.valid_move?(open_column)
+        open_column_move = game_board.valid_move?(open_column)
         expect(open_column_move).to be true
       end
     end
@@ -46,15 +48,15 @@ describe Board do
     context 'column is full' do
       it 'is not a valid move' do
         full_column = 1
-        full_column_move = game.valid_move?(full_column)
+        full_column_move = game_board.valid_move?(full_column)
         expect(full_column_move).to be false
       end
     end
   end
 
   describe '#update' do
-    before :each do
-      game.board = [
+    before do
+      update_example = [
         ['', '', '', '', '', '', ''],
         ['', '', '', '', '', '', ''],
         ['2', '', '', '', '', '', ''],
@@ -62,6 +64,7 @@ describe Board do
         ['2', '2', '', '', '', '', ''],
         ['1', '2', '', '', '', '', '']
       ]
+      game_board.instance_variable_set(:@board, update_example)
     end
 
     context 'column is empty' do
@@ -75,7 +78,7 @@ describe Board do
           ['1', '2', '', '', '1', '', '']
         ]
         open_column = 4
-        updated_board = game.update(open_column, player1)
+        updated_board = game_board.update(open_column, player1)
         expect(updated_board).to eql(result)
       end
     end
@@ -91,7 +94,7 @@ describe Board do
           ['1', '2', '', '', '', '', '']
         ]
         open_column = 1
-        updated_board = game.update(open_column, player1)
+        updated_board = game_board.update(open_column, player1)
         expect(updated_board).to eql(result)
       end
     end
@@ -99,8 +102,8 @@ describe Board do
 
   describe '#full?' do
     context 'board is full' do
-      it 'is true' do
-        game.board = [
+      it 'is full' do
+        full_board = [
           ['2', '2', '1', '2', '2', '2', '1'],
           ['1', '1', '2', '2', '1', '1', '2'],
           ['2', '1', '1', '1', '2', '2', '1'],
@@ -108,12 +111,14 @@ describe Board do
           ['2', '1', '2', '1', '1', '2', '1'],
           ['1', '2', '1', '2', '2', '1', '2']
         ]
-        expect(game.full?).to be true
+        game_board.instance_variable_set(:@board, full_board)
+        expect(game_board).to be_full
       end
     end
+
     context 'board is not full' do
-      it 'is false' do
-        game.board = [
+      it 'is not full' do
+        open_board = [
           ['2', '2', '1', '2', '', '', ''],
           ['1', '1', '2', '2', '', '1', '2'],
           ['2', '1', '1', '1', '2', '2', '1'],
@@ -121,15 +126,16 @@ describe Board do
           ['2', '1', '2', '1', '1', '2', '1'],
           ['1', '2', '1', '2', '2', '1', '2']
         ]
-        expect(game.full?).to be false
+        game_board.instance_variable_set(:@board, open_board)
+        expect(game_board).not_to be_full
       end
     end
   end
 
   describe '#row_victory?' do
     context 'row has four-in-a-row' do
-      it 'is true' do
-        game.board = [
+      it 'is a victory' do
+        row_victory = [
           ['', '', '', '', '', '', ''],
           ['', '', '', '', '', '', ''],
           ['1', '1', '1', '1', '', '', ''],
@@ -137,13 +143,14 @@ describe Board do
           ['2', '2', '1', '2', '', '', ''],
           ['1', '2', '2', '1', '', '', '']
         ]
-        expect(game.row_victory?).to be true
+        game_board.instance_variable_set(:@board, row_victory)
+        expect(game_board).to be_row_victory
       end
     end
 
     context 'row does not have four-in-a-row' do
-      it 'is false' do
-        game.board = [
+      it 'is not a victory' do
+        no_victory = [
           ['', '', '', '', '', '', ''],
           ['', '', '', '', '', '', ''],
           ['2', '1', '', '', '', '', ''],
@@ -151,15 +158,16 @@ describe Board do
           ['2', '1', '2', '2', '', '', ''],
           ['1', '2', '2', '1', '', '', '']
         ]
-        expect(game.row_victory?).to be false
+        game_board.instance_variable_set(:@board, no_victory)
+        expect(game_board).not_to be_row_victory
       end
     end
   end
 
   describe '#column_victory?' do
     context 'column has four-in-a-row' do
-      it 'is true' do
-        game.board = [
+      it 'is a victory' do
+        column_victory = [
           ['1', '', '', '', '', '', ''],
           ['1', '', '', '', '', '', ''],
           ['1', '1', '1', '1', '', '', ''],
@@ -167,13 +175,14 @@ describe Board do
           ['2', '2', '1', '2', '', '', ''],
           ['1', '2', '2', '1', '', '', '']
         ]
-        expect(game.column_victory?).to be true
+        game_board.instance_variable_set(:@board, column_victory)
+        expect(game_board).to be_column_victory
       end
     end
 
     context 'column does not have four-in-a-row' do
-      it 'is false' do
-        game.board = [
+      it 'is not a victory' do
+        no_victory = [
           ['', '', '', '', '', '', ''],
           ['', '', '', '', '', '', ''],
           ['2', '1', '', '', '', '', ''],
@@ -181,15 +190,16 @@ describe Board do
           ['2', '1', '2', '2', '', '', ''],
           ['1', '2', '2', '1', '', '', '']
         ]
-        expect(game.column_victory?).to be false
+        game_board.instance_variable_set(:@board, no_victory)
+        expect(game_board).not_to be_column_victory
       end
     end
   end
 
   describe '#diagonal_victory?' do
     context 'has a diagonal four-in-a-row' do
-      it 'is true' do
-        game.board = [
+      it 'is a victory' do
+        diagonal_victory = [
           ['1', '', '', '', '', '', ''],
           ['1', '', '', '', '', '', ''],
           ['1', '1', '1', '1', '', '', ''],
@@ -197,11 +207,12 @@ describe Board do
           ['2', '2', '1', '1', '', '', ''],
           ['1', '2', '2', '1', '', '', '']
         ]
-        expect(game.diagonal_victory?).to be true
+        game_board.instance_variable_set(:@board, diagonal_victory)
+        expect(game_board).to be_diagonal_victory
       end
 
-      it 'is true' do
-        game.board = [
+      it 'is a victory' do
+        diagonal_victory = [
           ['1', '', '', '', '', '', ''],
           ['2', '', '', '', '', '', ''],
           ['1', '1', '1', '1', '', '', ''],
@@ -209,13 +220,14 @@ describe Board do
           ['2', '1', '1', '1', '', '', ''],
           ['1', '2', '2', '2', '', '', '']
         ]
-        expect(game.diagonal_victory?).to be true
+        game_board.instance_variable_set(:@board, diagonal_victory)
+        expect(game_board).to be_diagonal_victory
       end
     end
 
     context 'does not have a diagonal four-in-a-row' do
-      it 'is false' do
-        game.board = [
+      it 'is not a victory' do
+        no_victory = [
           ['', '', '', '', '', '', ''],
           ['', '', '', '', '', '', ''],
           ['2', '1', '', '', '', '', ''],
@@ -223,15 +235,16 @@ describe Board do
           ['2', '1', '2', '2', '', '', ''],
           ['1', '2', '2', '1', '', '', '']
         ]
-        expect(game.diagonal_victory?).to be false
+        game_board.instance_variable_set(:@board, no_victory)
+        expect(game_board).not_to be_diagonal_victory
       end
     end
   end
 
   describe '#complete?' do
     context 'board has four-in-a-row' do
-      it 'is true' do
-        game.board = [
+      it 'is complete' do
+        victory_board = [
           ['1', '', '', '', '', '', ''],
           ['1', '', '', '', '', '', ''],
           ['1', '1', '1', '1', '', '', ''],
@@ -239,13 +252,14 @@ describe Board do
           ['2', '2', '1', '1', '', '', ''],
           ['1', '2', '2', '1', '', '', '']
         ]
-        expect(game.complete?).to be true
+        game_board.instance_variable_set(:@board, victory_board)
+        expect(game_board).to be_complete
       end
     end
 
     context 'board is full' do
       it 'is true' do
-        game.board = [
+        full_board = [
           ['2', '2', '1', '2', '2', '2', '1'],
           ['1', '1', '2', '2', '1', '1', '2'],
           ['2', '1', '1', '1', '2', '2', '1'],
@@ -253,13 +267,14 @@ describe Board do
           ['2', '1', '2', '1', '1', '2', '1'],
           ['1', '2', '1', '2', '2', '1', '2']
         ]
-        expect(game.complete?).to be true
+        game_board.instance_variable_set(:@board, full_board)
+        expect(game_board).to be_complete
       end
     end
 
     context 'board is not full or have four-in-a-row' do
-      it 'is false' do
-        game.board = [
+      it 'is not complete' do
+        incomplete_board = [
           ['1', '', '', '', '', '', ''],
           ['2', '', '', '', '', '', ''],
           ['1', '1', '2', '1', '', '', ''],
@@ -267,7 +282,8 @@ describe Board do
           ['2', '2', '1', '1', '', '', ''],
           ['1', '2', '2', '1', '', '', '']
         ]
-        expect(game.complete?).to be false
+        game_board.instance_variable_set(:@board, incomplete_board)
+        expect(game_board).not_to be_complete
       end
     end
   end

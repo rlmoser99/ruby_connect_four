@@ -1,7 +1,7 @@
 lib/board.rb -- 12 warnings:
 [8]:Attribute: Board#board is a writable attribute 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Attribute.md]
--> Make @instance_variable an attr_reader only. Create a method inside that Class that receives a message to update the @instance_variable.
+x Make @instance_variable an attr_reader only. Create a method inside that Class that receives a message to update the @instance_variable.
 
 [56, 60]:DuplicateMethodCall: Board#diagonal_victory? calls 'coords[0]' 2 times 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Duplicate-Method-Call.md]
