@@ -19,6 +19,7 @@ class GameBoard
 
   def initialize
     @board = Array.new(6) { Array.new(7, '') }
+    @detect = Detector.new
   end
 
   def valid_move?(column)
@@ -38,29 +39,40 @@ class GameBoard
   end
 
   def row_victory?
-    board.each do |row|
-      4.times { |n| return true if connect_four?(row[n..n + 3]) }
+    board.any? do |row|
+      divide_row?(row, 4) == true
     end
-    false
   end
+
+  def divide_row?(row, repeat)
+    repeat.times do |num|
+      return true if @detect.connect_four?(row[num..num + 3])
+    end
+  end
+
+  # def row_victory?
+  #   board.each do |row|
+  #     4.times { |num| return true if connect_four?(row[num..num + 3]) }
+  #   end
+  #   false
+  # end
+
+  # def column_victory?
+  #   board.transpose.each do |row|
+  #     3.times { |num| return true if connect_four?(row[num..num + 3]) }
+  #   end
+  #   false
+  # end
 
   def column_victory?
     board.transpose.each do |row|
-      3.times { |n| return true if connect_four?(row[n..n + 3]) }
+      3.times { |num| return true if @detect.connect_four?(row[num..num + 3]) }
     end
     false
   end
 
   def diagonal_victory?
-    FORWARD_COORDINATES.each do |coords|
-      forward_array = diagonal_array(coords[0], coords[1], 'forward')
-      return true if connect_four?(forward_array)
-    end
-    BACKWARD_COORDINATES.each do |coords|
-      backward_array = diagonal_array(coords[0], coords[1], 'backward')
-      return true if connect_four?(backward_array)
-    end
-    false
+    forward_diagonal? || backward_diagonal?
   end
 
   def complete?
@@ -77,8 +89,20 @@ class GameBoard
     row_index[-1]
   end
 
-  def connect_four?(array)
-    array.uniq.size == 1 && array[0] != ''
+  def forward_diagonal?
+    FORWARD_COORDINATES.each do |coords|
+      forward_array = diagonal_array(coords[0], coords[1], 'forward')
+      return true if @detect.connect_four?(forward_array)
+    end
+    false
+  end
+
+  def backward_diagonal?
+    BACKWARD_COORDINATES.each do |coords|
+      backward_array = diagonal_array(coords[0], coords[1], 'backward')
+      return true if @detect.connect_four?(backward_array)
+    end
+    false
   end
 
   def diagonal_array(row, column, direction, array = [])

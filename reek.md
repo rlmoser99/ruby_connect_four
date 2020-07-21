@@ -1,47 +1,55 @@
-lib/board.rb -- 12 warnings:
+# lib/board.rb -- 12 warnings:
+
 [8]:Attribute: Board#board is a writable attribute 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Attribute.md]
 x Make @instance_variable an attr_reader only. Create a method inside that Class that receives a message to update the @instance_variable.
 
 [56, 60]:DuplicateMethodCall: Board#diagonal_victory? calls 'coords[0]' 2 times 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Duplicate-Method-Call.md]
--> Refactor code to not need to call same thing multiple times.
+x Refactor code to not need to call same thing multiple times.
 
 [56, 60]:DuplicateMethodCall: Board#diagonal_victory? calls 'coords[1]' 2 times 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Duplicate-Method-Call.md]
--> Refactor code to not need to call same thing multiple times.
+x Refactor code to not need to call same thing multiple times.
 
 [75, 77]:FeatureEnvy: Board#find_empty_spot refers to 'row_index' more than self (maybe move it to another class?) 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Feature-Envy.md]
+->
 
 [84]:LongParameterList: Board#diagonal_array has 4 parameters 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Long-Parameter-List.md]
+->
 
 [49]:NestedIterators: Board#column_victory? contains iterators nested 2 deep 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Nested-Iterators.md]
+->
 
 [36]:NestedIterators: Board#full? contains iterators nested 2 deep 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Nested-Iterators.md]
+->
 
 [42]:NestedIterators: Board#row_victory? contains iterators nested 2 deep 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Nested-Iterators.md]
+x Completed
 
 [54]:TooManyStatements: Board#diagonal_victory? has approx 7 statements 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Too-Many-Statements.md]
--> Method needs to be simplified/shortened. Create helper method?
+x Method needs to be simplified/shortened. Create helper method?
 
 [49]:UncommunicativeVariableName: Board#column_victory? has the variable name 'n' 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Uncommunicative-Variable-Name.md]
--> Do not use 1 or 2 in variable names
+x Do not use 1 or 2 in variable names
 
 [42]:UncommunicativeVariableName: Board#row_victory? has the variable name 'n' 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Uncommunicative-Variable-Name.md]
--> Do not use 1 or 2 in variable names
+x Do not use 1 or 2 in variable names
 
 [80]:UtilityFunction: Board#connect_four? doesn't depend on instance state (maybe move it to another class?) 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Utility-Function.md]
+x Completed
 
-lib/display.rb -- 11 warnings:
+# lib/display.rb -- 11 warnings:
+
 [32]:ControlParameter: Display#chip_color is controlled by argument 'number' 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Control-Parameter.md]
 
@@ -77,7 +85,8 @@ lib/display.rb -- 11 warnings:
 [43]:UtilityFunction: Display#display_winner doesn't depend on instance state (maybe move it to another class?) 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Utility-Function.md]
 
-lib/game.rb -- 14 warnings:
+# lib/game.rb -- 14 warnings:
+
 [8]:Attribute: Game#board is a writable attribute 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Attribute.md]
 -> Make @instance_variable an attr_reader only. Create a method inside that Class that receives a message to update the @instance_variable.
@@ -132,4 +141,5 @@ lib/game.rb -- 14 warnings:
 
 [72]:UtilityFunction: Game#valid_input? doesn't depend on instance state (maybe move it to another class?) 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Utility-Function.md]
-37 total warnings
+
+# 37 total warnings
