@@ -27,7 +27,7 @@ class GameBoard
   end
 
   def update(column, player)
-    row = find_empty_spot(column)
+    row = @detect.empty_row(board, column)
     board[row][column] = player.number.to_s
     board
   end
@@ -49,7 +49,8 @@ class GameBoard
   end
 
   def diagonal_victory?
-    forward_diagonal? || backward_diagonal?
+    diagonal_check?(FORWARD_COORDINATES, 'forward') ||
+      diagonal_check?(BACKWARD_COORDINATES, 'backward')
   end
 
   def complete?
@@ -58,37 +59,28 @@ class GameBoard
 
   protected
 
-  def find_empty_spot(column)
-    row_index = []
-    board.each_with_index do |row, index|
-      row_index << index if row[column].empty?
-    end
-    row_index[-1]
-  end
+  # def find_empty_row(column)
+  #   row_index = []
+  #   board.each_with_index do |row, index|
+  #     row_index << index if row[column].empty?
+  #   end
+  #   row_index[-1]
+  # end
 
-  # COMBINE THESE TWO INTO ONE METHOD???
-  def forward_diagonal?
-    FORWARD_COORDINATES.each do |coords|
-      forward_array = diagonal_array(coords[0], coords[1], 'forward')
-      return true if @detect.connect_four?(forward_array)
-    end
-    false
-  end
-
-  def backward_diagonal?
-    BACKWARD_COORDINATES.each do |coords|
-      backward_array = diagonal_array(coords[0], coords[1], 'backward')
-      return true if @detect.connect_four?(backward_array)
+  def diagonal_check?(coordinates, direction)
+    coordinates.each do |coords|
+      complete_diagonal = build_diagonal(coords[0], coords[1], direction)
+      return true if @detect.connect_four?(complete_diagonal)
     end
     false
   end
 
-  def diagonal_array(row, column, direction, array = [])
+  def build_diagonal(row, column, direction, array = [])
     array << board[row][column]
     return array if array.length == 4
 
     column += 1 if direction == 'forward'
     column -= 1 if direction == 'backward'
-    diagonal_array(row + 1, column, direction, array)
+    build_diagonal(row + 1, column, direction, array)
   end
 end

@@ -14,7 +14,7 @@ x Refactor code to not need to call same thing multiple times.
 
 [75, 77]:FeatureEnvy: Board#find_empty_spot refers to 'row_index' more than self (maybe move it to another class?) 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Feature-Envy.md]
-->
+x Completed
 
 [84]:LongParameterList: Board#diagonal_array has 4 parameters 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Long-Parameter-List.md]
