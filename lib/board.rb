@@ -33,42 +33,19 @@ class GameBoard
   end
 
   def full?
-    board.all? do |row|
-      row.all? { |spot| spot.match?(/^[12]$/) }
-    end
+    board.flatten.reject(&:empty?).size == 42
   end
 
   def row_victory?
     board.any? do |row|
-      divide_row?(row, 4) == true
+      @detect.connect_four?(row)
     end
   end
-
-  def divide_row?(row, repeat)
-    repeat.times do |num|
-      return true if @detect.connect_four?(row[num..num + 3])
-    end
-  end
-
-  # def row_victory?
-  #   board.each do |row|
-  #     4.times { |num| return true if connect_four?(row[num..num + 3]) }
-  #   end
-  #   false
-  # end
-
-  # def column_victory?
-  #   board.transpose.each do |row|
-  #     3.times { |num| return true if connect_four?(row[num..num + 3]) }
-  #   end
-  #   false
-  # end
 
   def column_victory?
-    board.transpose.each do |row|
-      3.times { |num| return true if @detect.connect_four?(row[num..num + 3]) }
+    board.transpose.any? do |row|
+      @detect.connect_four?(row)
     end
-    false
   end
 
   def diagonal_victory?
@@ -89,6 +66,7 @@ class GameBoard
     row_index[-1]
   end
 
+  # COMBINE THESE TWO INTO ONE METHOD???
   def forward_diagonal?
     FORWARD_COORDINATES.each do |coords|
       forward_array = diagonal_array(coords[0], coords[1], 'forward')
