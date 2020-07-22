@@ -5,17 +5,20 @@ require_relative './display'
 # Order of the Connect Four Game
 class Game
   include Display
-  attr_accessor :board, :player1, :player2, :current_player
+  attr_reader :board, :first_player, :second_player, :current_player
 
   def initialize
     @board = GameBoard.new
+    @first_player = nil
+    @second_player = nil
+    @current_player = nil
   end
 
   def start_game
     puts display_title
     puts display_welcome
-    @player1 = create_player(1)
-    @player2 = create_player(2)
+    @first_player = create_player(1)
+    @second_player = create_player(2)
     play_game
   end
 
@@ -32,12 +35,12 @@ class Game
   end
 
   def turn_order
-    @current_player = player1
+    @current_player = first_player
     loop do
-      @column = player_turn_input(@current_player)
-      break if @column.downcase == 'exit'
+      column = player_turn_input(@current_player)
+      break if column.downcase == 'exit'
 
-      board.update(@column.to_i - 1, @current_player)
+      board.update(column.to_i - 1, @current_player)
       board.display_game
       break if board.complete?
 
@@ -74,19 +77,22 @@ class Game
   end
 
   def switch_current_player
-    @current_player = @current_player == player1 ? player2 : player1
+    @current_player = @current_player == first_player ? second_player : first_player
   end
 
   def game_over
-    unless board.full? || @column.downcase == 'exit'
+    if board.full?
+      puts display_draw
+    elsif board.complete?
       puts display_winner(@current_player)
+    else
+      puts display_exit
     end
-    puts display_draw if board.full?
-    repeat_game unless @column.downcase == 'exit'
+    repeat_game
   end
 
   def repeat_game
-    puts display_play_again(player1, player2)
+    puts display_play_again(first_player, second_player)
     repeat = gets.chomp
     return unless repeat == 'y'
 

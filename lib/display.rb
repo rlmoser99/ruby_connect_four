@@ -37,11 +37,17 @@ module Display
   end
 
   def display_draw
-    "\n\nThat was a tough game, andIt's a tie.\n\n"
+    "\n\nThat was a tough game, and it's a tie.\n\n"
+  end
+
+  def display_exit
+    "\n\nCurrent game has ended.\n\n"
   end
 
   def display_play_again(first_player, second_player)
     <<~HEREDOC
+
+    
       #{first_player.name} and #{second_player.name}, do you want to play again?
 
       Press '\e[32my\e[0m' for yes, or any other key to exit."

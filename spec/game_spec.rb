@@ -11,9 +11,9 @@ describe Game do
   subject(:game) { described_class.new }
 
   before do
-    game.player1 = instance_double(Player)
-    game.player2 = instance_double(Player)
-    game.board = instance_double(GameBoard)
+    game.instance_variable_set(:@first_player, instance_double(Player))
+    game.instance_variable_set(:@second_player, instance_double(Player))
+    game.instance_variable_set(:@board, instance_double(GameBoard))
   end
 
   describe '#start_game' do
@@ -52,8 +52,8 @@ describe Game do
   describe '#turn_order' do
     context 'when player column input is exit' do
       before do
-        game.instance_variable_set(:@current_player, game.player1)
-        game.instance_variable_set(:@column, 'exit')
+        game.instance_variable_set(:@current_player, game.first_player)
+        allow(game).to receive(:player_turn_input).with(game.current_player).and_return('exit')
       end
 
       it 'exits loop before switching current player' do
@@ -68,9 +68,11 @@ describe Game do
       player_input_column = 1
 
       before do
-        game.board = instance_double(GameBoard, display_game: nil, complete?: true)
-        game.instance_variable_set(:@current_player, game.player1)
+        game.instance_variable_set(:@board, instance_double(GameBoard))
+        game.instance_variable_set(:@current_player, game.first_player)
         game.instance_variable_set(:@column, player_input)
+        allow(game.board).to receive(:display_game).and_return(nil)
+        allow(game.board).to receive(:complete?).and_return(true)
       end
 
       it 'exits loop before switching curent player' do
@@ -96,19 +98,20 @@ describe Game do
     context 'when input is exit' do
       it 'returns exit' do
         exit_input = 'exit'
-        verified_input = game.verify_input(game.player1, exit_input)
+        verified_input = game.verify_input(game.first_player, exit_input)
         expect(verified_input).to eq('exit')
       end
     end
 
     context 'when input is a valid_move?' do
       before do
-        game.board = instance_double(GameBoard, valid_move?: true)
+        game.instance_variable_set(:@board, instance_double(GameBoard))
+        allow(game.board).to receive(:valid_move?).and_return(true)
       end
 
       it 'returns input' do
         number_input = '3'
-        verified_input = game.verify_input(game.player1, number_input)
+        verified_input = game.verify_input(game.first_player, number_input)
         expect(verified_input).to eq('3')
       end
     end
@@ -134,12 +137,13 @@ describe Game do
 
   describe '#turn_prompt' do
     before do
-      game.player1 = instance_double(Player, name: 'One', number: 1)
-      game.instance_variable_set(:@current_player, game.player1)
+      allow(game.first_player).to receive(:name).and_return('One')
+      allow(game.first_player).to receive(:number).and_return(1)
+      game.instance_variable_set(:@current_player, game.first_player)
     end
 
     it 'returns player input' do
-      prompt = "\n\n#{game.player1.name}, enter a column number (1-7) to drop a \u{1F534}  or 'exit' to end the game. "
+      prompt = "\n\n#{game.first_player.name}, enter a column number (1-7) to drop a \u{1F534}  or 'exit' to end the game. "
       user_input = '2'
       expect(game).to receive(:puts).once.with(prompt)
       expect(game).to receive(:gets).and_return(user_input)
@@ -176,16 +180,22 @@ describe Game do
 
   describe '#switch_current_player' do
     context 'when #1 was current_player' do
+      before do
+        game.instance_variable_set(:@current_player, game.first_player)
+      end
+
       it 'changes current_player to #2' do
-        game.current_player = game.player1
-        expect { game.switch_current_player }.to change { game.current_player }.to be(game.player2)
+        expect { game.switch_current_player }.to change { game.current_player }.to be(game.second_player)
       end
     end
 
     context 'when #2 was current_player' do
+      before do
+        game.instance_variable_set(:@current_player, game.second_player)
+      end
+
       it 'changes current_player to #1' do
-        game.current_player = game.player2
-        expect { game.switch_current_player }.to change { game.current_player }.to be(game.player1)
+        expect { game.switch_current_player }.to change { game.current_player }.to be(game.first_player)
       end
     end
   end
@@ -193,7 +203,8 @@ describe Game do
   describe '#game_over' do
     context 'when board is full' do
       before do
-        game.board = instance_double(GameBoard, full?: true)
+        game.instance_variable_set(:@board, instance_double(GameBoard))
+        allow(game.board).to receive(:full?).and_return(true)
         game.instance_variable_set(:@column, '3')
       end
 
@@ -205,31 +216,32 @@ describe Game do
       end
     end
 
-    context 'when column input is exit' do
+    context 'when board is not full or complete' do
       before do
-        game.board = instance_double(GameBoard, full?: false)
-        game.instance_variable_set(:@column, 'exit')
+        game.instance_variable_set(:@board, instance_double(GameBoard))
+        allow(game.board).to receive(:full?).and_return(false)
+        allow(game.board).to receive(:complete?).and_return(false)
       end
 
       it 'exits the game' do
-        expect(game).not_to receive(:puts)
-        expect(game).not_to receive(:display_draw)
-        expect(game).not_to receive(:display_winner)
-        expect(game).not_to receive(:repeat_game)
+        expect(game).to receive(:puts)
+        expect(game).to receive(:display_exit)
+        expect(game).to receive(:repeat_game)
         game.game_over
       end
     end
 
-    context 'when board is not full' do
+    context 'when board is complete' do
       before do
-        game.board = instance_double(GameBoard, full?: false)
-        game.instance_variable_set(:@column, '3')
-        game.instance_variable_set(:@current_player, game.player1)
+        game.instance_variable_set(:@board, instance_double(GameBoard))
+        allow(game.board).to receive(:full?).and_return(false)
+        allow(game.board).to receive(:complete?).and_return(true)
+        game.instance_variable_set(:@current_player, game.first_player)
       end
 
       it 'display winner' do
         expect(game).to receive(:puts)
-        expect(game).to receive(:display_winner).with(game.player1)
+        expect(game).to receive(:display_winner).with(game.first_player)
         expect(game).not_to receive(:display_draw)
         expect(game).to receive(:repeat_game)
         game.game_over
@@ -245,7 +257,7 @@ describe Game do
 
       it 'replays game' do
         expect(game).to receive(:puts)
-        expect(game).to receive(:display_play_again).with(game.player1, game.player2)
+        expect(game).to receive(:display_play_again).with(game.first_player, game.second_player)
         expect(game).to receive(:gets).and_return('y')
         expect(GameBoard).to receive(:new)
         expect(game).to receive(:play_game)
@@ -260,7 +272,7 @@ describe Game do
 
       it 'does not replay game' do
         expect(game).to receive(:puts)
-        expect(game).to receive(:display_play_again).with(game.player1, game.player2)
+        expect(game).to receive(:display_play_again).with(game.first_player, game.second_player)
         expect(game).to receive(:gets).and_return('n')
         expect(GameBoard).not_to receive(:new)
         expect(game).not_to receive(:play_game)

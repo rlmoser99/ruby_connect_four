@@ -98,43 +98,44 @@ x Ignore
 
 [8]:Attribute: Game#board is a writable attribute 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Attribute.md]
--> Make @instance_variable an attr_reader only. Create a method inside that Class that receives a message to update the @instance_variable.
+x Make @instance_variable an attr_reader only. Create a method inside that Class that receives a message to update the @instance_variable.
 
 [8]:Attribute: Game#current_player is a writable attribute 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Attribute.md]
--> Make @instance_variable an attr_reader only. Create a method inside that Class that receives a message to update the @instance_variable.
+x Make @instance_variable an attr_reader only. Create a method inside that Class that receives a message to update the @instance_variable.
 
 [8]:Attribute: Game#player1 is a writable attribute 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Attribute.md]
--> Make @instance_variable an attr_reader only. Create a method inside that Class that receives a message to update the @instance_variable.
+x Make @instance_variable an attr_reader only. Create a method inside that Class that receives a message to update the @instance_variable.
 
 [8]:Attribute: Game#player2 is a writable attribute 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Attribute.md]
--> Make @instance_variable an attr_reader only. Create a method inside that Class that receives a message to update the @instance_variable.
+x Make @instance_variable an attr_reader only. Create a method inside that Class that receives a message to update the @instance_variable.
 
 [81, 85]:DuplicateMethodCall: Game#game_over calls '@column.downcase == 'exit'' 2 times 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Duplicate-Method-Call.md]
--> Refactor code to not need to call same thing multiple times.
+x Refactor code to not need to call same thing multiple times.
 
 [81, 85]:DuplicateMethodCall: Game#game_over calls '@column.downcase' 2 times 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Duplicate-Method-Call.md]
--> Refactor code to not need to call same thing multiple times.
+x Refactor code to not need to call same thing multiple times.
 
 [81, 84]:DuplicateMethodCall: Game#game_over calls 'board.full?' 2 times 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Duplicate-Method-Call.md]
--> Refactor code to not need to call same thing multiple times.
+x Refactor code to not need to call same thing multiple times.
 
 
 [6]:InstanceVariableAssumption: Game assumes too much for instance variable '@column' 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Instance-Variable-Assumption.md]
--> Put @instance_variables in initialize method
+x Put @instance_variables in initialize method
 
 [6]:InstanceVariableAssumption: Game assumes too much for instance variable '@current_player' 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Instance-Variable-Assumption.md]
--> Put @instance_variables in initialize method
+x Put @instance_variables in initialize method
 
 [6]:TooManyInstanceVariables: Game has at least 5 instance variables 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Too-Many-Instance-Variables.md]
+x Completed
 
 [34]:TooManyStatements: Game#turn_order has approx 8 statements 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Too-Many-Statements.md]
@@ -142,11 +143,11 @@ x Ignore
 
 [17]:UncommunicativeVariableName: Game has the variable name '@player1' 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Uncommunicative-Variable-Name.md]
--> Do not use 1 or 2 in variable names
+x Do not use 1 or 2 in variable names
 
 [18]:UncommunicativeVariableName: Game has the variable name '@player2' 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Uncommunicative-Variable-Name.md]
--> Do not use 1 or 2 in variable names
+x Do not use 1 or 2 in variable names
 
 [72]:UtilityFunction: Game#valid_input? doesn't depend on instance state (maybe move it to another class?) 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Utility-Function.md]
