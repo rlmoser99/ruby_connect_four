@@ -47,10 +47,6 @@ class Game
     end
   end
 
-  def player_turn_input(player)
-    verify_input(player, player_input(turn_prompt(player)))
-  end
-
   def verify_input(player, input)
     return input if input.downcase == 'exit'
     return input if board.valid_move?(input.to_i - 1)
@@ -62,26 +58,6 @@ class Game
   def update_board(column, player)
     board.update(column, player)
     board.display_game
-  end
-
-  def player_input(input)
-    return input if valid_input?(input)
-
-    puts display_column_warning
-    player_input(turn_prompt(@current_player))
-  end
-
-  def turn_prompt(player)
-    puts display_turn_prompt(player)
-    gets.chomp
-  end
-
-  def valid_input?(input)
-    input.match?(/^[1-7]$|^exit$/i)
-  end
-
-  def switch_current_player
-    @current_player = @current_player == first_player ? second_player : first_player
   end
 
   def game_over
@@ -102,5 +78,31 @@ class Game
 
     @board = GameBoard.new
     play_game
+  end
+
+  protected
+
+  def player_turn_input(player)
+    verify_input(player, player_input(turn_prompt(player)))
+  end
+
+  def player_input(input)
+    return input if valid_input?(input)
+
+    puts display_column_warning
+    player_input(turn_prompt(@current_player))
+  end
+
+  def turn_prompt(player)
+    puts display_turn_prompt(player)
+    gets.chomp
+  end
+
+  def valid_input?(input)
+    input.match?(/^[1-7]$|^exit$/i)
+  end
+
+  def switch_current_player
+    @current_player = @current_player == first_player ? second_player : first_player
   end
 end

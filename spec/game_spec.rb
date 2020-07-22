@@ -17,20 +17,19 @@ describe Game do
   end
 
   describe '#start_game' do
-    it 'starts the game' do
-      expect(game).to receive(:puts)
-      expect(game).to receive(:display_title)
-      expect(game).to receive(:puts)
-      expect(game).to receive(:display_welcome)
-      expect(game).to receive(:create_player).with(1)
-      expect(game).to receive(:create_player).with(2)
-      expect(game).to receive(:play_game)
+    it 'creates two players' do
+      allow(game).to receive(:puts).twice
+      allow(game).to receive(:display_title)
+      allow(game).to receive(:display_welcome)
+      allow(game).to receive(:play_game)
+      expect(game).to receive(:create_player).once.with(1)
+      expect(game).to receive(:create_player).once.with(2)
       game.start_game
     end
   end
 
   describe '#play_game' do
-    it 'plays the game' do
+    it 'displays the game board' do
       expect(game.board).to receive(:display_game)
       expect(game).to receive(:turn_order)
       expect(game).to receive(:game_over)
@@ -85,14 +84,15 @@ describe Game do
     end
   end
 
-  describe '#player_turn_input' do
-    it 'returns a column number' do
-      player_input = '4'
-      expect(game).to receive(:player_turn_input).with(game.current_player).and_return(player_input)
-      column = game.player_turn_input(game.current_player)
-      expect(column).to eq(player_input)
-    end
-  end
+  # PROTECTED
+  # describe '#player_turn_input' do
+  #   it 'returns a column number' do
+  #     player_input = '4'
+  #     expect(game).to receive(:player_turn_input).with(game.current_player).and_return(player_input)
+  #     column = game.player_turn_input(game.current_player)
+  #     expect(column).to eq(player_input)
+  #   end
+  # end
 
   describe '#verify_input' do
     context 'when input is exit' do
@@ -117,88 +117,92 @@ describe Game do
     end
   end
 
-  describe '#player_input' do
-    context 'when input is 1-7' do
-      it 'returns valid number input' do
-        number_input = '3'
-        valid_input = game.player_input(number_input)
-        expect(valid_input).to eq('3')
-      end
-    end
+  # PRIVATE
+  # describe '#player_input' do
+  #   context 'when input is 1-7' do
+  #     it 'returns valid number input' do
+  #       number_input = '3'
+  #       valid_input = game.player_input(number_input)
+  #       expect(valid_input).to eq('3')
+  #     end
+  #   end
 
-    context 'when input is exit' do
-      it 'returns valid exit input' do
-        exit_input = 'exit'
-        valid_input = game.player_input(exit_input)
-        expect(valid_input).to eq('exit')
-      end
-    end
-  end
+  #   context 'when input is exit' do
+  #     it 'returns valid exit input' do
+  #       exit_input = 'exit'
+  #       valid_input = game.player_input(exit_input)
+  #       expect(valid_input).to eq('exit')
+  #     end
+  #   end
+  # end
 
-  describe '#turn_prompt' do
-    before do
-      allow(game.first_player).to receive(:name).and_return('One')
-      allow(game.first_player).to receive(:number).and_return(1)
-      game.instance_variable_set(:@current_player, game.first_player)
-    end
+  # PRIVATE
+  # describe '#turn_prompt' do
+  #   before do
+  #     allow(game.first_player).to receive(:name).and_return('One')
+  #     allow(game.first_player).to receive(:number).and_return(1)
+  #     game.instance_variable_set(:@current_player, game.first_player)
+  #   end
 
-    it 'returns player input' do
-      prompt = "\n\n#{game.first_player.name}, enter a column number (1-7) to drop a \u{1F534}  or 'exit' to end the game. "
-      user_input = '2'
-      expect(game).to receive(:puts).once.with(prompt)
-      expect(game).to receive(:gets).and_return(user_input)
-      result = game.turn_prompt(game.current_player)
-      expect(result).to eq(user_input)
-    end
-  end
+  #   it 'returns player input' do
+  #     prompt = "\n\n#{game.first_player.name}, enter a column number (1-7) to drop a \u{1F534}  or 'exit' to end the game. "
+  #     user_input = '2'
+  #     expect(game).to receive(:puts).once.with(prompt)
+  #     expect(game).to receive(:gets).and_return(user_input)
+  #     result = game.turn_prompt(game.current_player)
+  #     expect(result).to eq(user_input)
+  #   end
+  # end
 
-  describe '#valid_input?' do
-    context 'when user input is 1-digit from 1-7' do
-      it 'validates user input' do
-        user_input = '2'
-        result = game.valid_input?(user_input)
-        expect(result).to be true
-      end
-    end
+  # PRIVATE
+  # describe '#valid_input?' do
+  #   context 'when user input is 1-digit from 1-7' do
+  #     it 'validates user input' do
+  #       user_input = '2'
+  #       result = game.valid_input?(user_input)
+  #       expect(result).to be true
+  #     end
+  #   end
 
-    context 'when user input is exit' do
-      it 'validates user input' do
-        user_input = 'exit'
-        result = game.valid_input?(user_input)
-        expect(result).to be true
-      end
-    end
+  #   context 'when user input is exit' do
+  #     it 'validates user input' do
+  #       user_input = 'exit'
+  #       result = game.valid_input?(user_input)
+  #       expect(result).to be true
+  #     end
+  #   end
 
-    context 'when user input is not 1-digit from 1-7 or exit' do
-      it 'invalidates user input' do
-        user_input = 's'
-        result = game.valid_input?(user_input)
-        expect(result).to be false
-      end
-    end
-  end
+  #   context 'when user input is not 1-digit from 1-7 or exit' do
+  #     it 'invalidates user input' do
+  #       user_input = 's'
+  #       result = game.valid_input?(user_input)
+  #       expect(result).to be false
+  #     end
+  #   end
+  # end
 
-  describe '#switch_current_player' do
-    context 'when #1 was current_player' do
-      before do
-        game.instance_variable_set(:@current_player, game.first_player)
-      end
+  # PRIVATE
+  # describe '#switch_current_player' do
+  #   context 'when #1 was current_player' do
+  #     before do
+  #       game.instance_variable_set(:@current_player, game.first_player)
+  #     end
 
-      it 'changes current_player to #2' do
-        expect { game.switch_current_player }.to change { game.current_player }.to be(game.second_player)
-      end
-    end
+  #     it 'changes current_player to #2' do
+  #       expect { game.switch_current_player }.to change { game.current_player }.to be(game.second_player)
+  #     end
+  #   end
 
-    context 'when #2 was current_player' do
-      before do
-        game.instance_variable_set(:@current_player, game.second_player)
-      end
+  #   context 'when #2 was current_player' do
+  #     before do
+  #       game.instance_variable_set(:@current_player, game.second_player)
+  #     end
 
-      it 'changes current_player to #1' do
-        expect { game.switch_current_player }.to change { game.current_player }.to be(game.first_player)
-      end
-    end
-  end
+  #     it 'changes current_player to #1' do
+  #       expect { game.switch_current_player }.to change { game.current_player }.to be(game.first_player)
+  #     end
+  #   end
+  # end
 
   describe '#game_over' do
     context 'when board is full' do
