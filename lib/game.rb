@@ -90,7 +90,7 @@ class Game
     repeat = gets.chomp
     return unless repeat == 'y'
 
-    @board = Board.new
+    @board = GameBoard.new
     play_game
   end
 end

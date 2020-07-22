@@ -5,6 +5,7 @@
 require_relative '../lib/game'
 require_relative '../lib/player'
 require_relative '../lib/board'
+require_relative '../lib/detector'
 
 describe Game do
   subject(:game) { described_class.new }
@@ -12,7 +13,7 @@ describe Game do
   before do
     game.player1 = instance_double(Player)
     game.player2 = instance_double(Player)
-    game.board = instance_double(Board)
+    game.board = instance_double(GameBoard)
   end
 
   describe '#start_game' do
@@ -67,7 +68,7 @@ describe Game do
       player_input_column = 1
 
       before do
-        game.board = instance_double(Board, display_game: nil, complete?: true)
+        game.board = instance_double(GameBoard, display_game: nil, complete?: true)
         game.instance_variable_set(:@current_player, game.player1)
         game.instance_variable_set(:@column, player_input)
       end
@@ -102,7 +103,7 @@ describe Game do
 
     context 'when input is a valid_move?' do
       before do
-        game.board = instance_double(Board, valid_move?: true)
+        game.board = instance_double(GameBoard, valid_move?: true)
       end
 
       it 'returns input' do
@@ -192,7 +193,7 @@ describe Game do
   describe '#game_over' do
     context 'when board is full' do
       before do
-        game.board = instance_double(Board, full?: true)
+        game.board = instance_double(GameBoard, full?: true)
         game.instance_variable_set(:@column, '3')
       end
 
@@ -206,7 +207,7 @@ describe Game do
 
     context 'when column input is exit' do
       before do
-        game.board = instance_double(Board, full?: false)
+        game.board = instance_double(GameBoard, full?: false)
         game.instance_variable_set(:@column, 'exit')
       end
 
@@ -221,7 +222,7 @@ describe Game do
 
     context 'when board is not full' do
       before do
-        game.board = instance_double(Board, full?: false)
+        game.board = instance_double(GameBoard, full?: false)
         game.instance_variable_set(:@column, '3')
         game.instance_variable_set(:@current_player, game.player1)
       end
@@ -246,7 +247,7 @@ describe Game do
         expect(game).to receive(:puts)
         expect(game).to receive(:display_play_again).with(game.player1, game.player2)
         expect(game).to receive(:gets).and_return('y')
-        expect(Board).to receive(:new)
+        expect(GameBoard).to receive(:new)
         expect(game).to receive(:play_game)
         game.repeat_game
       end
@@ -261,7 +262,7 @@ describe Game do
         expect(game).to receive(:puts)
         expect(game).to receive(:display_play_again).with(game.player1, game.player2)
         expect(game).to receive(:gets).and_return('n')
-        expect(Board).not_to receive(:new)
+        expect(GameBoard).not_to receive(:new)
         expect(game).not_to receive(:play_game)
         game.repeat_game
       end
