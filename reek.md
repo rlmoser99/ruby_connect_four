@@ -18,15 +18,15 @@ x Completed
 
 [84]:LongParameterList: Board#diagonal_array has 4 parameters 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Long-Parameter-List.md]
-->
+-> IGNORE FOR NOW
 
 [49]:NestedIterators: Board#column_victory? contains iterators nested 2 deep 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Nested-Iterators.md]
-->
+x Completed
 
 [36]:NestedIterators: Board#full? contains iterators nested 2 deep 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Nested-Iterators.md]
-->
+x Completed
 
 [42]:NestedIterators: Board#row_victory? contains iterators nested 2 deep 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Nested-Iterators.md]
@@ -52,38 +52,47 @@ x Completed
 
 [32]:ControlParameter: Display#chip_color is controlled by argument 'number' 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Control-Parameter.md]
+x Ignore
 
 [79, 89]:DuplicateMethodCall: Display#display_board calls 'puts '|----+----+----+----+----+----+----|'' 2 times 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Duplicate-Method-Call.md]
--> Refactor code to not need to call same thing multiple times.
+x Refactor code to not need to call same thing multiple times.
 
 [28, 28]:FeatureEnvy: Display#display_turn_prompt refers to 'player' more than self (maybe move it to another class?) 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Feature-Envy.md]
+x Ignore
 
 [82]:NestedIterators: Display#display_board contains iterators nested 2 deep 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Nested-Iterators.md]
+x Completed
 
 [6]:TooManyConstants: Display has 10 constants 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Too-Many-Constants.md]
+x Completed
 
 [78]:TooManyStatements: Display#display_board has approx 10 statements 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Too-Many-Statements.md]
--> Method needs to be simplified/shortened. Create helper method?
+x Method needs to be simplified/shortened. Create helper method?
 
 [51]:UncommunicativeParameterName: Display#display_play_again has the parameter name 'player1' 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Uncommunicative-Parameter-Name.md]
+x Completed
 
 [51]:UncommunicativeParameterName: Display#display_play_again has the parameter name 'player2' 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Uncommunicative-Parameter-Name.md]
+x Completed
 
 [31]:UtilityFunction: Display#chip_color doesn't depend on instance state (maybe move it to another class?) 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Utility-Function.md]
+x Ignore
 
 [51]:UtilityFunction: Display#display_play_again doesn't depend on instance state (maybe move it to another class?) 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Utility-Function.md]
+x Ignore
 
 [43]:UtilityFunction: Display#display_winner doesn't depend on instance state (maybe move it to another class?) 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Utility-Function.md]
+x Ignore
 
 # lib/game.rb -- 14 warnings:
 

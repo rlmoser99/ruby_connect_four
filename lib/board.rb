@@ -28,6 +28,7 @@ class GameBoard
 
   def update(column, player)
     row = @detect.empty_row(board, column)
+    # row = find_empty_row(column)
     board[row][column] = player.number.to_s
     board
   end
@@ -59,12 +60,10 @@ class GameBoard
 
   protected
 
-  # def find_empty_row(column)
-  #   row_index = []
-  #   board.each_with_index do |row, index|
-  #     row_index << index if row[column].empty?
-  #   end
-  #   row_index[-1]
+  # def find_empty_row(column, tally = Hash.new(0))
+  #   row = board.transpose[column]
+  #   row.each { |cell| tally[cell] += 1 }
+  #   tally[''] - 1
   # end
 
   def diagonal_check?(coordinates, direction)

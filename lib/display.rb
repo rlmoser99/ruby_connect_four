@@ -1,18 +1,10 @@
 # frozen_string_literal: true
 
-# rubocop:disable Layout/LineLength, Metrics/MethodLength
+# rubocop:disable Layout/LineLength
 
 # Text Content for Connect Four game
 module Display
-  # OPEN = "\u2B24 "
   OPEN = "\u26AB "
-  ONE = "\e[32m\u2460\e[0m"
-  TWO = "\e[32m\u2461\e[0m"
-  THREE = "\e[32m\u2462\e[0m"
-  FOUR = "\e[32m\u2463\e[0m"
-  FIVE = "\e[32m\u2464\e[0m"
-  SIX = "\e[32m\u2465\e[0m"
-  SEVEN = "\e[32m\u2466\e[0m"
   RED_CHIP = "\u{1F534} "
   BLUE_CHIP = "\u{1F535} "
 
@@ -48,9 +40,9 @@ module Display
     "\n\nThat was a tough game, andIt's a tie.\n\n"
   end
 
-  def display_play_again(player1, player2)
+  def display_play_again(first_player, second_player)
     <<~HEREDOC
-      #{player1.name} and #{player2.name}, do you want to play again?
+      #{first_player.name} and #{second_player.name}, do you want to play again?
 
       Press '\e[32my\e[0m' for yes, or any other key to exit."
     HEREDOC
@@ -71,23 +63,42 @@ module Display
   def display_game
     puts display_title
     puts ''
-    puts "  #{ONE}    #{TWO}    #{THREE}    #{FOUR}    #{FIVE}    #{SIX}    #{SEVEN}"
+    puts "  \e[32m\u2460\e[0m    \e[32m\u2461\e[0m    \e[32m\u2462\e[0m    \e[32m\u2463\e[0m    \e[32m\u2464\e[0m    \e[32m\u2465\e[0m    \e[32m\u2466\e[0m"
+    puts '|----+----+----+----+----+----+----|'
     display_board
   end
 
   def display_board
-    puts '|----+----+----+----+----+----+----|'
     board.each do |row|
       print '|'
-      row.each do |cell|
-        print " #{OPEN}" if cell == ''
-        print " #{RED_CHIP}" if cell == '1'
-        print " #{BLUE_CHIP}" if cell == '2'
-        print ' |'
-      end
+      row_output(row)
       puts ''
       puts '|----+----+----+----+----+----+----|'
     end
   end
+
+  def row_output(row)
+    row.each do |cell|
+      print " #{OPEN}" if cell == ''
+      print " #{RED_CHIP}" if cell == '1'
+      print " #{BLUE_CHIP}" if cell == '2'
+      print ' |'
+    end
+  end
+
+  # def display_board
+  #   puts '|----+----+----+----+----+----+----|'
+  #   board.each do |row|
+  #     print '|'
+  #     row.each do |cell|
+  #       print " #{OPEN}" if cell == ''
+  #       print " #{RED_CHIP}" if cell == '1'
+  #       print " #{BLUE_CHIP}" if cell == '2'
+  #       print ' |'
+  #     end
+  #     puts ''
+  #     puts '|----+----+----+----+----+----+----|'
+  #   end
+  # end
 end
-# rubocop:enable Layout/LineLength, Metrics/MethodLength
+# rubocop:enable Layout/LineLength
