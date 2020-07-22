@@ -52,7 +52,7 @@ x Completed
 
 [32]:ControlParameter: Display#chip_color is controlled by argument 'number' 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Control-Parameter.md]
-x Ignore
+-> IGNORE FOR NOW
 
 [79, 89]:DuplicateMethodCall: Display#display_board calls 'puts '|----+----+----+----+----+----+----|'' 2 times 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Duplicate-Method-Call.md]
@@ -60,7 +60,7 @@ x Refactor code to not need to call same thing multiple times.
 
 [28, 28]:FeatureEnvy: Display#display_turn_prompt refers to 'player' more than self (maybe move it to another class?) 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Feature-Envy.md]
-x Ignore
+-> IGNORE FOR NOW
 
 [82]:NestedIterators: Display#display_board contains iterators nested 2 deep 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Nested-Iterators.md]
@@ -84,15 +84,15 @@ x Completed
 
 [31]:UtilityFunction: Display#chip_color doesn't depend on instance state (maybe move it to another class?) 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Utility-Function.md]
-x Ignore
+-> IGNORE FOR NOW
 
 [51]:UtilityFunction: Display#display_play_again doesn't depend on instance state (maybe move it to another class?) 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Utility-Function.md]
-x Ignore
+-> IGNORE FOR NOW
 
 [43]:UtilityFunction: Display#display_winner doesn't depend on instance state (maybe move it to another class?) 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Utility-Function.md]
-x Ignore
+-> IGNORE FOR NOW
 
 # lib/game.rb -- 14 warnings:
 
@@ -138,7 +138,7 @@ x Completed
 
 [34]:TooManyStatements: Game#turn_order has approx 8 statements 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Too-Many-Statements.md]
--> Method needs to be simplified/shortened. Create helper method?
+-> IGNORE FOR NOW
 
 [17]:UncommunicativeVariableName: Game has the variable name '@player1' 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Uncommunicative-Variable-Name.md]
@@ -150,5 +150,6 @@ x Do not use 1 or 2 in variable names
 
 [72]:UtilityFunction: Game#valid_input? doesn't depend on instance state (maybe move it to another class?) 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Utility-Function.md]
+-> IGNORE FOR NOW
 
 # 37 total warnings

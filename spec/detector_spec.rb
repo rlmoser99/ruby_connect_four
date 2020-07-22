@@ -8,15 +8,15 @@ describe Detector do
   describe '#connect_four?' do
     context 'array has four of the same value' do
       it 'has a connect four' do
-        same_four = detect.connect_four?(%w[1 1 1 1])
-        expect(same_four).to be true
+        four_in_a_row = detect.connect_four?(%w[1 1 1 1 2 1 2])
+        expect(four_in_a_row).to be true
       end
     end
 
     context 'array does not have four of the same value' do
       it 'does not have a connect four' do
-        different_four = detect.connect_four?(%w[1 2 1 1])
-        expect(different_four).to be false
+        no_connect_four = detect.connect_four?(%w[1 2 1 1 2 2 1])
+        expect(no_connect_four).to be false
       end
     end
   end
