@@ -24,6 +24,7 @@ class Game
 
   def play_game
     board.display_game
+    @current_player = first_player
     turn_order
     game_over
   end
@@ -35,13 +36,11 @@ class Game
   end
 
   def turn_order
-    @current_player = first_player
     loop do
       column = player_turn_input(@current_player)
       break if column.downcase == 'exit'
 
-      board.update(column.to_i - 1, @current_player)
-      board.display_game
+      update_board(column.to_i - 1, @current_player)
       break if board.complete?
 
       switch_current_player
@@ -53,11 +52,16 @@ class Game
   end
 
   def verify_input(player, input)
-    return 'exit' if input.downcase == 'exit'
+    return input if input.downcase == 'exit'
     return input if board.valid_move?(input.to_i - 1)
 
     puts display_column_full
     verify_input(player, player_input(turn_prompt(player)))
+  end
+
+  def update_board(column, player)
+    board.update(column, player)
+    board.display_game
   end
 
   def player_input(input)

@@ -8,12 +8,6 @@ class Detector
     false
   end
 
-  def empty_row(board, column, tally = Hash.new(0))
-    row = board.transpose[column]
-    row.each { |cell| tally[cell] += 1 }
-    tally[''] - 1
-  end
-
   private
 
   def four_of_a_kind?(array)

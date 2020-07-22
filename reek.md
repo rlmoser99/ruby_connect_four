@@ -124,7 +124,6 @@ x Refactor code to not need to call same thing multiple times.
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Duplicate-Method-Call.md]
 x Refactor code to not need to call same thing multiple times.
 
-
 [6]:InstanceVariableAssumption: Game assumes too much for instance variable '@column' 
 [https://github.com/troessner/reek/blob/v6.0.1/docs/Instance-Variable-Assumption.md]
 x Put @instance_variables in initialize method
