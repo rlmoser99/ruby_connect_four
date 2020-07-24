@@ -30,9 +30,9 @@ describe Game do
 
   describe '#play_game' do
     it 'displays the game board' do
+      allow(game).to receive(:turn_order)
+      allow(game).to receive(:game_over)
       expect(game.board).to receive(:display_game)
-      expect(game).to receive(:turn_order)
-      expect(game).to receive(:game_over)
       game.play_game
     end
   end
@@ -40,8 +40,8 @@ describe Game do
   describe '#create_player' do
     it 'creates one player' do
       player_number = 1
-      expect(game).to receive(:puts)
-      expect(game).to receive(:display_name).with(1)
+      allow(game).to receive(:puts)
+      allow(game).to receive(:display_name).with(1)
       allow(game).to receive(:gets).and_return('PlayerName')
       expect(Player).to receive(:new).with('PlayerName', player_number)
       game.create_player(player_number)
@@ -56,7 +56,6 @@ describe Game do
       end
 
       it 'exits loop before switching current player' do
-        expect(game).to receive(:player_turn_input).with(game.current_player).and_return('exit')
         expect(game).not_to receive(:switch_current_player)
         game.turn_order
       end
@@ -70,14 +69,13 @@ describe Game do
         game.instance_variable_set(:@board, instance_double(GameBoard))
         game.instance_variable_set(:@current_player, game.first_player)
         game.instance_variable_set(:@column, player_input)
-        allow(game.board).to receive(:display_game).and_return(nil)
+        allow(game.board).to receive(:display_game)
         allow(game.board).to receive(:complete?).and_return(true)
+        allow(game.board).to receive(:update).with(player_input_column, game.current_player)
+        allow(game).to receive(:player_turn_input).with(game.current_player).and_return(player_input)
       end
 
       it 'exits loop before switching curent player' do
-        expect(game).to receive(:player_turn_input).with(game.current_player).and_return(player_input)
-        expect(game.board).to receive(:update).with(player_input_column, game.current_player)
-        expect(game.board).to receive(:display_game)
         expect(game).not_to receive(:switch_current_player)
         game.turn_order
       end
@@ -94,6 +92,7 @@ describe Game do
   #   end
   # end
 
+  # TEST THAT MESSAGES ARE SENT!
   describe '#verify_input' do
     context 'when input is exit' do
       it 'returns exit' do
