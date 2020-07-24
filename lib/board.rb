@@ -3,9 +3,9 @@
 require_relative 'display.rb'
 
 # Board Logic for Connect Four
-class Board
+class GameBoard
   include Display
-  attr_accessor :board
+  attr_reader :board
   FORWARD_COORDINATES = [
     [0, 0], [0, 1], [0, 2], [0, 3],
     [1, 0], [1, 1], [1, 2], [1, 3],
@@ -19,48 +19,39 @@ class Board
 
   def initialize
     @board = Array.new(6) { Array.new(7, '') }
+    @detect = Detector.new
   end
 
   def valid_move?(column)
     board.any? { |row| row[column].empty? }
   end
 
-  def update(column, player)
-    row = find_empty_spot(column)
-    board[row][column] = player.number.to_s
+  def update(column, player, count = Hash.new(0))
+    user_column = board.transpose[column]
+    user_column.each { |cell| count[cell] += 1 }
+    board[count[''] - 1][column] = player.number.to_s
     board
   end
 
   def full?
-    board.all? do |row|
-      row.all? { |spot| spot.match?(/^[12]$/) }
-    end
+    board.flatten.reject(&:empty?).size == 42
   end
 
   def row_victory?
-    board.each do |row|
-      4.times { |n| return true if connect_four?(row[n..n + 3]) }
+    board.any? do |row|
+      @detect.connect_four?(row)
     end
-    false
   end
 
   def column_victory?
-    board.transpose.each do |row|
-      3.times { |n| return true if connect_four?(row[n..n + 3]) }
+    board.transpose.any? do |row|
+      @detect.connect_four?(row)
     end
-    false
   end
 
   def diagonal_victory?
-    FORWARD_COORDINATES.each do |coords|
-      forward_array = diagonal_array(coords[0], coords[1], 'forward')
-      return true if connect_four?(forward_array)
-    end
-    BACKWARD_COORDINATES.each do |coords|
-      backward_array = diagonal_array(coords[0], coords[1], 'backward')
-      return true if connect_four?(backward_array)
-    end
-    false
+    diagonal_check?(FORWARD_COORDINATES, 'forward') ||
+      diagonal_check?(BACKWARD_COORDINATES, 'backward')
   end
 
   def complete?
@@ -69,24 +60,20 @@ class Board
 
   protected
 
-  def find_empty_spot(column)
-    row_index = []
-    board.each_with_index do |row, index|
-      row_index << index if row[column].empty?
+  def diagonal_check?(coordinates, direction)
+    coordinates.each do |coords|
+      complete_diagonal = build_diagonal(coords[0], coords[1], direction)
+      return true if @detect.connect_four?(complete_diagonal)
     end
-    row_index[-1]
+    false
   end
 
-  def connect_four?(array)
-    array.uniq.size == 1 && array[0] != ''
-  end
-
-  def diagonal_array(row, column, direction, array = [])
+  def build_diagonal(row, column, direction, array = [])
     array << board[row][column]
     return array if array.length == 4
 
     column += 1 if direction == 'forward'
     column -= 1 if direction == 'backward'
-    diagonal_array(row + 1, column, direction, array)
+    build_diagonal(row + 1, column, direction, array)
   end
 end

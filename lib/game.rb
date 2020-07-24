@@ -5,24 +5,21 @@ require_relative './display'
 # Order of the Connect Four Game
 class Game
   include Display
-  attr_accessor :board, :player1, :player2, :current_player
+  attr_reader :board, :first_player, :second_player, :current_player
 
   def initialize
-    @board = Board.new
+    @board = GameBoard.new
+    @first_player = nil
+    @second_player = nil
+    @current_player = nil
   end
 
   def start_game
     puts display_title
     puts display_welcome
-    @player1 = create_player(1)
-    @player2 = create_player(2)
+    @first_player = create_player(1)
+    @second_player = create_player(2)
     play_game
-  end
-
-  def play_game
-    board.display_game
-    turn_order
-    game_over
   end
 
   def create_player(number)
@@ -31,14 +28,35 @@ class Game
     Player.new(name, number)
   end
 
-  def turn_order
-    @current_player = player1
-    loop do
-      @column = player_turn_input(@current_player)
-      break if @column.downcase == 'exit'
+  def update_board(column, player)
+    board.update(column, player)
+    board.display_game
+  end
 
-      board.update(@column.to_i - 1, @current_player)
-      board.display_game
+  def repeat_game
+    puts display_play_again(first_player, second_player)
+    repeat = gets.chomp
+    return unless repeat == 'y'
+
+    @board = GameBoard.new
+    play_game
+  end
+
+  protected
+
+  def play_game
+    board.display_game
+    @current_player = first_player
+    turn_order
+    game_over
+  end
+
+  def turn_order
+    loop do
+      column = player_turn_input(@current_player)
+      break if column.downcase == 'exit'
+
+      update_board(column.to_i - 1, @current_player)
       break if board.complete?
 
       switch_current_player
@@ -50,7 +68,7 @@ class Game
   end
 
   def verify_input(player, input)
-    return 'exit' if input.downcase == 'exit'
+    return input if input.downcase == 'exit'
     return input if board.valid_move?(input.to_i - 1)
 
     puts display_column_full
@@ -74,23 +92,17 @@ class Game
   end
 
   def switch_current_player
-    @current_player = @current_player == player1 ? player2 : player1
+    @current_player = @current_player == first_player ? second_player : first_player
   end
 
   def game_over
-    unless board.full? || @column.downcase == 'exit'
+    if board.full?
+      puts display_draw
+    elsif board.complete?
       puts display_winner(@current_player)
+    else
+      puts display_exit
     end
-    puts display_draw if board.full?
-    repeat_game unless @column.downcase == 'exit'
-  end
-
-  def repeat_game
-    puts display_play_again(player1, player2)
-    repeat = gets.chomp
-    return unless repeat == 'y'
-
-    @board = Board.new
-    play_game
+    repeat_game
   end
 end
