@@ -44,16 +44,6 @@ module Display
     "\n\nCurrent game has ended.\n\n"
   end
 
-  def display_play_again(first_player, second_player)
-    <<~HEREDOC
-
-    
-      #{first_player.name} and #{second_player.name}, do you want to play again?
-
-      Press '\e[32my\e[0m' for yes, or any other key to exit."
-    HEREDOC
-  end
-
   def display_title
     system 'clear'
     <<~HEREDOC
@@ -91,20 +81,5 @@ module Display
       print ' |'
     end
   end
-
-  # def display_board
-  #   puts '|----+----+----+----+----+----+----|'
-  #   board.each do |row|
-  #     print '|'
-  #     row.each do |cell|
-  #       print " #{OPEN}" if cell == ''
-  #       print " #{RED_CHIP}" if cell == '1'
-  #       print " #{BLUE_CHIP}" if cell == '2'
-  #       print ' |'
-  #     end
-  #     puts ''
-  #     puts '|----+----+----+----+----+----+----|'
-  #   end
-  # end
 end
 # rubocop:enable Layout/LineLength

@@ -33,15 +33,6 @@ class Game
     board.display_game
   end
 
-  def repeat_game
-    puts display_play_again(first_player, second_player)
-    repeat = gets.chomp
-    return unless repeat == 'y'
-
-    @board = GameBoard.new
-    play_game
-  end
-
   protected
 
   def play_game
@@ -103,6 +94,5 @@ class Game
     else
       puts display_exit
     end
-    repeat_game
   end
 end
