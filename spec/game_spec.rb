@@ -3,16 +3,17 @@
 # rubocop:disable Metrics/BlockLength
 
 require_relative '../lib/game'
-require_relative '../lib/player'
 require_relative '../lib/board'
 require_relative '../lib/detector'
 
 describe Game do
   subject(:game) { described_class.new }
+  let(:player_one) { double('player', name: 'one', number: 1) }
+  let(:player_two) { double('player', name: 'two', number: 2) }
 
   before do
-    game.instance_variable_set(:@first_player, instance_double(Player))
-    game.instance_variable_set(:@second_player, instance_double(Player))
+    game.instance_variable_set(:@first_player, player_one)
+    game.instance_variable_set(:@second_player, player_two)
     game.instance_variable_set(:@board, instance_double(GameBoard))
   end
 
@@ -29,13 +30,28 @@ describe Game do
   end
 
   describe '#create_player' do
-    it 'creates one player' do
-      player_number = 1
+    before do
       allow(game).to receive(:puts)
       allow(game).to receive(:display_name).with(1)
       allow(game).to receive(:gets).and_return('PlayerName')
-      expect(Player).to receive(:new).with('PlayerName', player_number)
-      game.create_player(player_number)
+    end
+
+    it 'creates a Struct' do
+      player_number = 1
+      player = game.create_player(player_number)
+      expect(player).to be_a(Struct)
+    end
+
+    it 'creates player with a name' do
+      player_number = 1
+      player = game.create_player(player_number)
+      expect(player.name).to eq('PlayerName')
+    end
+
+    it 'creates player with a number' do
+      player_number = 1
+      player = game.create_player(player_number)
+      expect(player.number).to eq(1)
     end
   end
 

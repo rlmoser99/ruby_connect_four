@@ -7,6 +7,9 @@ class Game
   include Display
   attr_reader :board, :first_player, :second_player, :current_player
 
+  # Player attributes for Game
+  Player = Struct.new(:name, :number)
+
   def initialize
     @board = GameBoard.new
     @first_player = nil
@@ -50,7 +53,7 @@ class Game
       update_board(column.to_i - 1, @current_player)
       break if board.complete?
 
-      switch_current_player
+      @current_player = switch_current_player
     end
   end
 
@@ -83,7 +86,11 @@ class Game
   end
 
   def switch_current_player
-    @current_player = @current_player == first_player ? second_player : first_player
+    if current_player == first_player
+      second_player
+    else
+      first_player
+    end
   end
 
   def game_over

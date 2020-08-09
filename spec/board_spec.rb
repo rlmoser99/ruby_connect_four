@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
 require_relative '../lib/board'
-require_relative '../lib/player'
 require_relative '../lib/detector'
 
 # rubocop:disable Metrics/BlockLength, Style/WordArray
 
 describe GameBoard do
   subject(:game_board) { described_class.new }
-  let(:player1) { Player.new('test', 1) }
+  let(:first_player) { double('player', name: 'test', number: 1) }
 
   describe '#initialize' do
     it 'creates an empty grid of 6 rows by 7 columns' do
@@ -79,7 +78,7 @@ describe GameBoard do
           ['1', '2', '', '', '1', '', '']
         ]
         open_column = 4
-        updated_board = game_board.update(open_column, player1)
+        updated_board = game_board.update(open_column, first_player)
         expect(updated_board).to eql(result)
       end
     end
@@ -95,7 +94,7 @@ describe GameBoard do
           ['1', '2', '', '', '', '', '']
         ]
         open_column = 1
-        updated_board = game_board.update(open_column, player1)
+        updated_board = game_board.update(open_column, first_player)
         expect(updated_board).to eql(result)
       end
     end
